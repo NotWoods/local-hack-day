@@ -1,8 +1,20 @@
-const { createReadStream } = require('fs');
-const { Transform, Writable } = require("stream");
-const { StringDecoder } = require('string_decoder');
+const fs = require('fs')
+var DIC = {}
 
-class Splitter extends Transform {
+fs.readFile('./sowpods.txt','utf8', (err, data) => {
+  console.log(err)
+  data.split('\r\n').forEach((word) => {
+    DIC[word] = 1
+  })
+})
+
+
+
+/*const { createReadStream } = require('fs');
+const { Transform, Writable } = require("stream");
+const { StringDecoder } = require('string_decoder');*/
+
+/*class Splitter extends Transform {
   _transform(chunk, encoding, next) {
     let lines = ((this.soFar != null ? this.soFar:"") + chunk.toString()).split(/\r?\n/);
     this.soFar = lines.pop();
@@ -47,7 +59,7 @@ class Searcher extends Transform {
 		})
 	}
 }
-
+*/
 /**
  * Checks if a word exists in a scrabble dictionary
  * @param {string} word
@@ -55,10 +67,15 @@ class Searcher extends Transform {
  * If the word does not exist, the promise rejects.
  */
 function validWord(word) {
-	const searcher = new Searcher(word);
-	createReadStream('sowpods.txt').pipe(new Splitter()).pipe(searcher);
-	return searcher.ready();
+
 	//.then(console.log, () => console.error('failed'));
+  return new Promise((resolve, reject) => {
+    if (DIC[word.toUpperCase()]) {
+      resolve(word.toUpperCase())
+    } else {
+      reject()
+    }
+  })
 }
 
 // validWord(process.argv[2])
