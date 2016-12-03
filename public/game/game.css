@@ -11,7 +11,7 @@ body {
 	text-align: center;
 	align-items: center;
 	height: 100vh;
-	min-width: 20em;
+	min-height: 20em;
 	overflow: hidden
 }
 
@@ -39,13 +39,12 @@ body {
 
 .Game-bomb {
 	width: 20em;
+	animation-duration: 0.82s;
+	animation-timing-function: cubic-bezier(.36, .07, .19, .97);
+	animation-fill-mode: both;
 }
 .Game-bomb-wrapper {
 	margin-top: 1em;
-}
-
-.Game-bomb--invalid {
-	animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 @keyframes shake {

@@ -10,7 +10,7 @@ class Game {
 		bombId = 'bomb'
 	) {
 		this.value = '';
-		this.valid = Promise.reject();
+		this.valid = Promise.reject('Nothing entered');
 
 		const input = document.getElementById(inputId);
 		const text = document.getElementById(textId);
@@ -27,14 +27,17 @@ class Game {
 			.then(() => {
 				// TODO submit
 			})
-			.catch(() => this.bomb.style.animationName = 'shake')
+			.catch(() => {
+				console.log('hey')
+				this.bomb.style.animationName = 'shake'
+			})
 		);
 		input.addEventListener('change', (e) => {
 			var value = e.target.value;
 			this.valid = fetch(`../checkword/${value}`, { method: HEAD })
 				.then(response => response.ok);
 		});
-		bomb.addEventListener('animationEnd',
+		bomb.addEventListener('animationend',
 			() => this.bomb.style.animationName = '');
 	}
 
@@ -51,3 +54,5 @@ class Game {
 		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
 	}
 }
+
+new Game();
