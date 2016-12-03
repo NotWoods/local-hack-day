@@ -11,3 +11,5 @@
 {"event":"CLUSTER_JOIN","level":"info","message":"iw9kilvn-hfo8gc4de1sk","timestamp":"2016-12-03T18:44:05.046Z"}
 {"event":"INFO","level":"info","message":"Listening for websocket connections on 0.0.0.0:6020/deepstream","timestamp":"2016-12-03T18:44:05.086Z"}
 {"event":"INFO","level":"info","message":"Deepstream started","timestamp":"2016-12-03T18:44:05.092Z"}
+{"event":"CLUSTER_LEAVE","level":"info","message":"iw9kilvn-hfo8gc4de1sk","timestamp":"2016-12-03T19:26:26.928Z"}
+{"event":"CLUSTER_JOIN","level":"info","message":"iw9kilvn-hfo8gc4de1sk","timestamp":"2016-12-03T19:26:27.202Z"}
