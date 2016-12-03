@@ -3,7 +3,7 @@ exports.publicFiles = {
 	path: '/{param*}',
 	handler: {
 		directory: {
-			path: '../public',
+			path: 'public',
 			index: true,
 		},
 	},
