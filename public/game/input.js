@@ -5,7 +5,7 @@ class Game {
 		const input = document.getElementById();
 		input.addEventListener('change', (e) => {
 			this.value = e.target.value;
-			// TODO
+			fetch(function ())
 		});
 	}
 }
