@@ -1,10 +1,13 @@
 var uuid = require('uuid')
 
 var ALPHABET = 'qwertyuiopasdfghjklzxcvbnm'
+var VOWELS = 'aeiouy'
 var started = false
 var startTime = 0
 var lobby = []
 var sessions = {}
+ 
+
 
 function startGame () {
   startTime = Date.now()
@@ -35,13 +38,14 @@ function startBomb () {
   selected.emit('bomb.you')
   selected.turn = true
   
-  setInterval(function () {
+  var interval = setInterval(function () {
     var now = Date.now()
     sess.forEach((socket) => {
       socket.emit('bomb.sync', 30000 - (now - startTime))
     })
   }, 1000)
   setTimeout(function () {
+    clearInterval(interval)
     endBomb(sess)
   }, 30000)
 }
