@@ -1,9 +1,9 @@
 const fs = require('fs')
-const DIC = new Set();
+const DIC = {}
 
 fs.readFile('./sowpods.txt','utf8', (err, data) => {
   console.log(err)
-  data.split('\r\n').forEach((word) => DIC.set(word))
+  data.split('\r\n').forEach((word) => (DIC[word] = 1))
 })
 
 /**
@@ -14,7 +14,7 @@ fs.readFile('./sowpods.txt','utf8', (err, data) => {
  */
 function validWord(word) {
 	const wordUpper = word.toUpperCase();
-	if (DIC.has(wordUpper)) return Promise.resolve(wordUpper);
+	if (DIC[wordUpper]) return Promise.resolve(wordUpper);
 	else return Promise.reject();
 }
 
