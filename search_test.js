@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const { createReadStream } = require('fs');
 const { Transform, Writable } = require("stream");
 const { StringDecoder } = require('string_decoder');
 
@@ -49,13 +49,10 @@ class Searcher extends Transform {
 }
 
 function validWord(word) {
-	return fetch('https://raw.githubusercontent.com/jmlewis/valett/master/scrabble/sowpods.txt')
-		.then(res => {
-			const searcher = new Searcher(word);
-			res.body.pipe(new Splitter()).pipe(searcher);
-			return searcher.ready();
-		})
-		.then(console.log, () => console.error('failed'));
+	const searcher = new Searcher(word);
+	createReadStream('./sowpods.txt').pipe(new Splitter()).pipe(searcher);
+	return searcher.ready()
+	.then(console.log, () => console.error('failed'));
 }
 
 validWord(process.argv[2])
