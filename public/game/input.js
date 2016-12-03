@@ -11,6 +11,8 @@ class Game {
 	) {
 		this.valid = Promise.resolve(false);
 		this.letters = '';
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this)
 
 		const input = document.getElementById(inputId);
 		const text = document.getElementById(textId);
@@ -24,7 +26,32 @@ class Game {
 
 		Object.assign(this, { input, text, fuse, bomb, mc });
 
-		const onSubmit = (e) => this.valid.then((isValid) => {
+		mc.on('swipe', this.handleSubmit);
+		mc.on('tap', this.handleSubmit);
+
+		input.addEventListener('keyup', this.handleChange);
+		bomb.addEventListener('animationend',	() => this.bomb.style.animationName = '');
+	}
+
+	setText(newLetters) {
+		this.letters = newLetters.toUpperCase();
+		this.text.textContent = this.letters;
+	}
+
+	clearInput() {
+		this.input.reset();
+	}
+
+	setFuse(percent) {
+		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
+	}
+
+	containsLetters(value) {
+		return value.toUpperCase().includes(this.letters);
+	}
+
+	handleSubmit(e) {
+		this.valid.then((isValid) => {
 			if (!isValid) {
 				this.bomb.style.animationName = 'shake';
 				return;
@@ -52,40 +79,24 @@ class Game {
 
 			this.bomb.style.animationName = animationName;
 		});
-
-		mc.on('swipe', onSubmit);
-		mc.on('tap', onSubmit);
-
-		input.addEventListener('change', (e) => {
-			var value = e.target.value;
-			if (!this.containsLetters(value)) {
-				this.valid = Promise.resolve(false);
-				return;
-			}
-
-			this.valid = fetch(`../checkword/${value}`, { method: 'HEAD' })
-				.catch(err => ({ ok: false }))
-				.then(response => response.ok)
-		});
-		bomb.addEventListener('animationend',
-			() => this.bomb.style.animationName = '');
 	}
 
-	setText(newLetters) {
-		this.letters = newLetters.toUpperCase();
-		this.text.textContent = this.letters;
-	}
+	handleChange(e) {
+		if (e.keyCode === 13) {
+			this.handleSubmit({});
+			return;
+		}
 
-	clearInput() {
-		this.input.reset();
-	}
+		const value = e.target.value;
+		//console.log(value);
+		if (!this.containsLetters(value)) {
+			this.valid = Promise.resolve(false);
+			return;
+		}
 
-	setFuse(percent) {
-		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
-	}
-
-	containsLetters(value) {
-		return value.toUpperCase().includes(this.letters);
+		this.valid = fetch(`../checkword/${value}`, { method: 'HEAD' })
+			.catch(err => ({ ok: false }))
+			.then(response => response.ok)
 	}
 }
 
