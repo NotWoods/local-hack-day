@@ -62,3 +62,13 @@ module.exports = function validWord(word) {
 }
 
 // validWord(process.argv[2])
+
+exports.route = {
+	method: 'GET',
+	path: '/checkword/{word}',
+	handler({ params: { word } }, reply) {
+		return validWord(word)
+			.then(result => reply(result))
+			.catch(() => reply('Word invalid').code(400));
+	}
+}
