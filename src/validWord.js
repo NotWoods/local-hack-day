@@ -3,7 +3,7 @@ const DIC = new Set();
 
 fs.readFile('./sowpods.txt','utf8', (err, data) => {
   console.log(err)
-  data.split('\r\n').forEach((word) => DIC.set(word))
+  data.split('\r\n').forEach(word => DIC.add(word))
 })
 
 /**
