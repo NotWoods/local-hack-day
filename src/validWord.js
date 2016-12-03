@@ -48,11 +48,17 @@ class Searcher extends Transform {
 	}
 }
 
-function validWord(word) {
+/**
+ * Checks if a word exists in a scrabble dictionary
+ * @param {string} word
+ * @returns {Promise} if word exists, resolves with the word.
+ * If the word does not exist, the promise rejects.
+ */
+module.exports = function validWord(word) {
 	const searcher = new Searcher(word);
 	createReadStream('./sowpods.txt').pipe(new Splitter()).pipe(searcher);
 	return searcher.ready()
-	.then(console.log, () => console.error('failed'));
+	//.then(console.log, () => console.error('failed'));
 }
 
-validWord(process.argv[2])
+// validWord(process.argv[2])
