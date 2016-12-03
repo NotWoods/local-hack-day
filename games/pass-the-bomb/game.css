@@ -1,0 +1,23 @@
+body {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	color: #212121;
+}
+
+.Game {
+	display: flex;
+	flex-flow: column;
+	text-align: center;
+}
+
+.Game-subtitle {
+
+}
+
+.Game-letters {
+	font-size: 25vh;
+	margin: 0;
+}
+
+.Game-bomb {
+	width: 20em;
+}
