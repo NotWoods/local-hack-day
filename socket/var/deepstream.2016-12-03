@@ -1,0 +1,13 @@
+{"event":"INFO","level":"info","message":"logger ready","timestamp":"2016-12-03T18:44:04.957Z"}
+{"event":"INFO","level":"info","message":"deepstream version: 2.0.1","timestamp":"2016-12-03T18:44:04.971Z"}
+{"event":"INFO","level":"info","message":"configuration file loaded from conf\\config.yml","timestamp":"2016-12-03T18:44:04.973Z"}
+{"event":"INFO","level":"info","message":"library directory set to: C:\\Users\\joe\\Dropbox\\projects\\local-hack-day\\socket\\lib","timestamp":"2016-12-03T18:44:04.974Z"}
+{"event":"INFO","level":"info","message":"messageConnector ready","timestamp":"2016-12-03T18:44:04.975Z"}
+{"event":"INFO","level":"info","message":"storage ready","timestamp":"2016-12-03T18:44:04.977Z"}
+{"event":"INFO","level":"info","message":"cache ready","timestamp":"2016-12-03T18:44:04.979Z"}
+{"event":"INFO","level":"info","message":"authenticationHandler ready: none","timestamp":"2016-12-03T18:44:04.980Z"}
+{"event":"INFO","level":"info","message":"permissionHandler ready: valve permissions loaded from C:\\Users\\joe\\Dropbox\\projects\\local-hack-day\\socket\\conf\\permissions.yml","timestamp":"2016-12-03T18:44:05.013Z"}
+{"event":"INFO","level":"info","message":"Listening for health checks on path /health-check","timestamp":"2016-12-03T18:44:05.035Z"}
+{"event":"CLUSTER_JOIN","level":"info","message":"iw9kilvn-hfo8gc4de1sk","timestamp":"2016-12-03T18:44:05.046Z"}
+{"event":"INFO","level":"info","message":"Listening for websocket connections on 0.0.0.0:6020/deepstream","timestamp":"2016-12-03T18:44:05.086Z"}
+{"event":"INFO","level":"info","message":"Deepstream started","timestamp":"2016-12-03T18:44:05.092Z"}
