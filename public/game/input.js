@@ -8,6 +8,7 @@ class Game {
 		bombId = 'bomb'
 	) {
 		this.value = '';
+		this.valid = Promise.reject();
 
 		const input = document.getElementById(inputId);
 		input.addEventListener('change', (e) => {
@@ -16,16 +17,26 @@ class Game {
 				.then(response => response.ok);
 		});
 
-		this.text = document.getElementById(textId);
-		this.fuse = document.getElementById(fuseId);
+		const text = document.getElementById(textId);
+		const fuse = document.getElementById(fuseId);
+
+		const fuseLength = fuse.getTotalLength();
+		fuse.style.transition = 'none';
+		fuse.style.strokeDasharray = `${fuseLength}`;
+		fuse.style.strokeDashoffset = 0;
 
 		const bomb = document.getElementById(bombId);
 		const mc = new Manager(bomb);
 		mc.add(new Swipe({ direction: DIRECTION_ALL }));
 
-		mc.on('swipe', (e) => this.valid.then(() => {
-			// TODO submit
-		}));
+		mc.on('swipe', (e) => this.valid.then(
+			() => {
+				// TODO submit
+			},
+			() => {
+				// TODO error
+			})
+		);
 	}
 
 	setText(newLetters) {
@@ -38,6 +49,6 @@ class Game {
 	}
 
 	setFuse(percent) {
-
+		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
 	}
 }
