@@ -1,13 +1,18 @@
 const { Manager, Swipe, DIRECTION_ALL } = Hammer; // import Hammer;
 
 class Game {
-	constructor(inputId = 'wordInput', textId = 'letterSet', fuseId = 'fuse', bombId = 'bomb') {
+	constructor(
+		inputId = 'wordInput',
+		textId = 'letterSet',
+		fuseId = 'fuse',
+		bombId = 'bomb'
+	) {
 		this.value = '';
 
 		const input = document.getElementById(inputId);
 		input.addEventListener('change', (e) => {
 			var value = e.target.value;
-			this.valid = fetch(`../checkword/{value}`, { method: HEAD })
+			this.valid = fetch(`../checkword/${value}`, { method: HEAD })
 				.then(response => response.ok);
 		});
 
@@ -19,7 +24,7 @@ class Game {
 		mc.add(new Swipe({ direction: DIRECTION_ALL }));
 
 		mc.on('swipe', (e) => this.valid.then(() => {
-
+			// TODO submit
 		}));
 	}
 
