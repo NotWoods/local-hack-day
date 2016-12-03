@@ -1,4 +1,5 @@
 const { Manager, Swipe, DIRECTION_ALL } = Hammer; // import Hammer;
+var bombMovable = false
 
 class Game {
 	constructor(inputId = 'wordInput', textId = 'letterSet', fuseId = 'fuse', bombId = 'bomb') {
@@ -6,8 +7,12 @@ class Game {
 
 		const input = document.getElementById(inputId);
 		input.addEventListener('change', (e) => {
-			this.value = e.target.value;
-			fetch(function ())
+			var value = e.target.value;
+			fetch('/checkword/' + value).then(function () {
+				bombMovable = true
+			}, function () {
+				bombMovable = false
+			})
 		});
 
 		this.text = document.getElementById(textId);
@@ -24,6 +29,7 @@ class Game {
 
 	setText(newLetters) {
 		this.text.textContent = newLetters;
+
 	}
 
 	clearInput() {
