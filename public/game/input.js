@@ -1,4 +1,4 @@
-const { Manager, Swipe, Tap, DIRECTION_ALL } = Hammer; // import Hammer;
+const { Manager, Swipe, Tap } = Hammer; // import Hammer;
 
 const FUSE_LENGTH = 415;
 
@@ -9,8 +9,8 @@ class Game {
 		fuseId = 'fuse',
 		bombId = 'bomb'
 	) {
-		this.value = '';
-		this.valid = Promise.reject('Nothing entered');
+		this.valid = Promise.resolve(false);
+		this.letters = '';
 
 		const input = document.getElementById(inputId);
 		const text = document.getElementById(textId);
@@ -19,29 +19,61 @@ class Game {
 
 		const bomb = document.getElementById(bombId);
 		const mc = new Manager(bomb);
-		mc.add(new Swipe({ direction: DIRECTION_ALL }));
+		mc.add(new Swipe({ direction: Hammer.DIRECTION_ALL }));
 		mc.add(new Tap());
 
 		Object.assign(this, { input, text, fuse, bomb, mc });
 
-		const onSubmit = (e) => this.valid.then(() => {
+		const onSubmit = (e) => this.valid.then((isValid) => {
+			if (!isValid) {
+				this.bomb.style.animationName = 'shake';
+				return;
+			}
+
 			// TODO submit
-		}).catch(() => this.bomb.style.animationName = 'shake');
+
+			let animationName;
+			switch (e.direction) {
+				case Hammer.DIRECTION_LEFT:
+					animationName = 'slideLeft';
+					break;
+				case Hammer.DIRECTION_RIGHT:
+					animationName = 'slideRight';
+					break;
+				case Hammer.DIRECTION_UP:
+					animationName = 'slideUp';
+					break;
+				case Hammer.DIRECTION_NONE:
+				case Hammer.DIRECTION_DOWN:
+				default:
+					animationName = 'slideDown';
+					break;
+			}
+
+			this.bomb.style.animationName = animationName;
+		});
+
 		mc.on('swipe', onSubmit);
 		mc.on('tap', onSubmit);
 
 		input.addEventListener('change', (e) => {
 			var value = e.target.value;
-			this.valid = fetch(`../checkword/${value}`, { method: HEAD })
-				.then(response => response.ok);
+			if (!this.containsLetters(value)) {
+				this.valid = Promise.resolve(false);
+				return;
+			}
+
+			this.valid = fetch(`../checkword/${value}`, { method: 'HEAD' })
+				.catch(err => ({ ok: false }))
+				.then(response => response.ok)
 		});
 		bomb.addEventListener('animationend',
 			() => this.bomb.style.animationName = '');
 	}
 
 	setText(newLetters) {
-		this.text.textContent = newLetters;
-
+		this.letters = newLetters.toUpperCase();
+		this.text.textContent = this.letters;
 	}
 
 	clearInput() {
@@ -51,6 +83,10 @@ class Game {
 	setFuse(percent) {
 		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
 	}
+
+	containsLetters(value) {
+		return value.toUpperCase().includes(this.letters);
+	}
 }
 
-new Game();
+new Game().setText('ke');
