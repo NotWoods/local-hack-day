@@ -1,4 +1,4 @@
-/*var uuid = require('uuid')
+var uuid = require('uuid')
 
 var Game = {
   sessions: {},
@@ -17,4 +17,4 @@ function Handler (io) {
   })
 }
 
-module.exports = Handler*/
+module.exports = Handler
