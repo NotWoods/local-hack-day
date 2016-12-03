@@ -1,0 +1,39 @@
+body {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	color: #212121;
+	margin: 0;
+	background: #f0f0f0;
+}
+
+.Game {
+	display: flex;
+	flex-flow: column;
+	text-align: center;
+	align-items: center;
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+}
+
+.Game-subtitle {
+	margin-top: 2em;
+}
+
+.Game-letters {
+	font-size: 8em;
+	margin: 0;
+}
+
+.Game-input {
+	font-size: 2em;
+	padding: 0.2em;
+	font-family: inherit;
+	border-radius: 0.2em;
+	border: 1px solid gray;
+}
+
+.Game-bomb {
+	width: 20em;
+	position: absolute;
+	bottom: -5em;
+}
