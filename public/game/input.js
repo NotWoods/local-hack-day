@@ -1,4 +1,4 @@
-const { Manager, Swipe, DIRECTION_ALL } = Hammer; // import Hammer;
+const { Manager, Swipe, Tap, DIRECTION_ALL } = Hammer; // import Hammer;
 
 const FUSE_LENGTH = 415;
 
@@ -20,18 +20,16 @@ class Game {
 		const bomb = document.getElementById(bombId);
 		const mc = new Manager(bomb);
 		mc.add(new Swipe({ direction: DIRECTION_ALL }));
+		mc.add(new Tap());
 
 		Object.assign(this, { input, text, fuse, bomb, mc });
 
-		mc.on('swipe', (e) => this.valid
-			.then(() => {
-				// TODO submit
-			})
-			.catch(() => {
-				console.log('hey')
-				this.bomb.style.animationName = 'shake'
-			})
-		);
+		const onSubmit = (e) => this.valid.then(() => {
+			// TODO submit
+		}).catch(() => this.bomb.style.animationName = 'shake');
+		mc.on('swipe', onSubmit);
+		mc.on('tap', onSubmit);
+
 		input.addEventListener('change', (e) => {
 			var value = e.target.value;
 			this.valid = fetch(`../checkword/${value}`, { method: HEAD })
