@@ -6,6 +6,7 @@
   "author": "Tiger Oakes <tigeroakes@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "hapi": "^16.0.1"
+    "hapi": "^16.0.1",
+    "inert": "^4.0.3"
   }
 }

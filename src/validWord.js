@@ -56,8 +56,8 @@ class Searcher extends Transform {
  */
 module.exports = function validWord(word) {
 	const searcher = new Searcher(word);
-	createReadStream('./sowpods.txt').pipe(new Splitter()).pipe(searcher);
-	return searcher.ready()
+	createReadStream('../sowpods.txt').pipe(new Splitter()).pipe(searcher);
+	return searcher.ready();
 	//.then(console.log, () => console.error('failed'));
 }
 
