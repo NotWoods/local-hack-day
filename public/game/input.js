@@ -1,4 +1,4 @@
-// import Hammer;
+const { Manager, Swipe, DIRECTION_ALL } = Hammer; // import Hammer;
 
 class Game {
 	constructor(inputId = 'wordInput', textId = 'letterSet', fuseId = 'fuse', bombId = 'bomb') {
@@ -14,9 +14,12 @@ class Game {
 		this.fuse = document.getElementById(fuseId);
 
 		const bomb = document.getElementById(bombId);
-		const hammertime = new Hammer(bomb, {});
+		const mc = new Manager(bomb);
+		mc.add(new Swipe({ direction: DIRECTION_ALL }));
 
-		hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+		mc.on('swipe', (e) => {
+
+		});
 	}
 
 	setText(newLetters) {
