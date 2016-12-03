@@ -54,11 +54,21 @@ class Searcher extends Transform {
  * @returns {Promise} if word exists, resolves with the word.
  * If the word does not exist, the promise rejects.
  */
-module.exports = function validWord(word) {
+exports.default = function validWord(word) {
 	const searcher = new Searcher(word);
-	createReadStream('./sowpods.txt').pipe(new Splitter()).pipe(searcher);
-	return searcher.ready()
+	createReadStream('../sowpods.txt').pipe(new Splitter()).pipe(searcher);
+	return searcher.ready();
 	//.then(console.log, () => console.error('failed'));
 }
 
 // validWord(process.argv[2])
+
+exports.route = {
+	method: 'GET',
+	path: '/checkword/{word}',
+	handler({ params: { word } }, reply) {
+		return validWord(word)
+			.then(result => reply(result))
+			.catch(() => reply('Word invalid').code(400));
+	},
+}
