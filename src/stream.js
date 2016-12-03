@@ -35,11 +35,11 @@ function Handler (io) {
         var two = ALPHABET[~~(Math.random() * ALPHABET.length)]
         socket.emit('data', [one,two])
         Gane.started = false
+        Game.sessions[socket.sessionId].startTime = Date.now()
       }, 6000)
     })
 
     socket.on('word', function (data) {
-      Game.sessions[socket.sessionId]
     })
   })
 }
