@@ -1,3 +1,10 @@
+body {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: #212121;
+	margin: 0;
+	background: #f0f0f0;
+}
+
 .screen {
     display: flex;
     flex-direction: column;
@@ -9,8 +16,6 @@
 .title {
     margin-bottom: 10px;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
     width: 20%;
     border: none;
     color: #36454F;
@@ -19,15 +24,11 @@
     text-decoration: none;
     display: inline-block;
     font-size: 36px;
-    font-family: Impact;
-
 }
 
 a.buttons {
     margin-bottom: 10px;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
 
     width: 10%;
     background-color: #36454F;
@@ -39,7 +40,6 @@ a.buttons {
     display: inline-block;
 
     font-size: 20px;
-    font-family: Impact;
     letter-spacing: 1px;
 }
 
