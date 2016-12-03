@@ -1,9 +1,10 @@
 const fs = require('fs')
-const DIC = new Set();
+const DIC = {}
+let readErr;
 
 fs.readFile('./sowpods.txt','utf8', (err, data) => {
-  console.log(err)
-  data.split('\r\n').forEach(word => DIC.add(word))
+  readErr = err;
+  data.split('\r\n').forEach((word) => (DIC[word] = 1));
 })
 
 /**
@@ -13,8 +14,10 @@ fs.readFile('./sowpods.txt','utf8', (err, data) => {
  * If the word does not exist, the promise rejects.
  */
 function validWord(word) {
+	if (readErr) return Promise.reject(readErr);
+
 	const wordUpper = word.toUpperCase();
-	if (DIC.has(wordUpper)) return Promise.resolve(wordUpper);
+	if (DIC[wordUpper]) return Promise.resolve(wordUpper);
 	else return Promise.reject();
 }
 
