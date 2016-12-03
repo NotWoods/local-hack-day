@@ -4,7 +4,7 @@ exports.publicFiles = {
 	handler: {
 		directory: {
 			path: '../public',
-			index: true
+			index: true,
 		},
 	},
 }

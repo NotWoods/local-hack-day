@@ -70,5 +70,5 @@ exports.route = {
 		return validWord(word)
 			.then(result => reply(result))
 			.catch(() => reply('Word invalid').code(400));
-	}
+	},
 }
