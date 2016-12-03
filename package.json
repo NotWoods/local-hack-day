@@ -6,7 +6,8 @@
   "license": "MIT",
   "dependencies": {
     "hapi": "^16.0.1",
-    "inert": "^4.0.3"
+    "inert": "^4.0.3",
+    "socket.io": "^1.7.1"
   },
   "scripts": {
     "start": "node index.js"

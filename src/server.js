@@ -8,5 +8,7 @@ const server = new Server();
 server.connection({ port: 8000 });
 server.register(Inert).then(() => server.route(publicFiles));
 server.route(validateWord);
+var io = require('socket.io')(socket.listen)
+require('./stream')(io)
 
 module.exports = server;
