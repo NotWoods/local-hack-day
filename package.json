@@ -1,0 +1,11 @@
+{
+  "name": "local-hack-day",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/NotWoods/local-hack-day.git",
+  "author": "Tiger Oakes <tigeroakes@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "^16.0.1"
+  }
+}
