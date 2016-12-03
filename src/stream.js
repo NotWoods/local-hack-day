@@ -1,10 +1,4 @@
 var uuid = require('uuid')
-
-var Game = {
-  sessions: {},
-  done: {}
-}
-
 var ALPHABET = 'qwertyuiopasdfghjklzxcvbnm'
 
 function Handler (io) {

@@ -11,7 +11,7 @@ class Game {
 			}, function () {
 				bombMovable = false
 			})
-		});
+		})
 
 		this.text = document.getElementById(textId);
 		this.fuse = document.getElementById(fuseId);
