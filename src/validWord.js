@@ -54,9 +54,9 @@ class Searcher extends Transform {
  * @returns {Promise} if word exists, resolves with the word.
  * If the word does not exist, the promise rejects.
  */
-exports.default = function validWord(word) {
+function validWord(word) {
 	const searcher = new Searcher(word);
-	createReadStream('../sowpods.txt').pipe(new Splitter()).pipe(searcher);
+	createReadStream('sowpods.txt').pipe(new Splitter()).pipe(searcher);
 	return searcher.ready();
 	//.then(console.log, () => console.error('failed'));
 }
@@ -72,3 +72,5 @@ exports.route = {
 			.catch(() => reply('Word invalid').code(400));
 	},
 }
+
+exports.default = validWord;
