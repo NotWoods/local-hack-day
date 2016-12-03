@@ -30,7 +30,7 @@ class Game {
 				return;
 			}
 
-			// TODO submit
+			socket.emit('bomb.pass')
 
 			let animationName;
 			switch (e.direction) {
