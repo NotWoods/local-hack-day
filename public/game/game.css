@@ -11,16 +11,16 @@ body {
 	text-align: center;
 	align-items: center;
 	height: 100vh;
-	position: relative;
-	overflow: hidden;
+	min-width: 20em;
+	overflow: hidden
 }
 
 .Game-subtitle {
-	margin-top: 2em;
+	margin-top: 1em;
 }
 
 .Game-letters {
-	font-size: 8em;
+	font-size: 5em;
 	margin: 0;
 }
 
@@ -34,6 +34,7 @@ body {
 
 .Game-bomb {
 	width: 20em;
-	position: absolute;
-	bottom: -5em;
+}
+.Game-bomb-wrapper {
+	margin-top: 1em;
 }
