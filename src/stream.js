@@ -1,8 +1,6 @@
 var uuid = require('uuid')
 const generateString = require('./generateString.js');
-
-var ALPHABET = 'qwertyuiopasdfghjklzxcvbnm'
-var VOWELS = 'aeiouy'
+const MaxRounds = 0
 var started = false
 var startTime = 0
 var lobby = []
@@ -38,6 +36,7 @@ function startBomb (again, sess) {
     var newText = generateString();
     var sess = sessions[id] = lobby.map((socket) => {
       socket.gameId = id
+      socket.emit('bomb.new')
       socket.emit('game.text', newText);
       return socket
     })
@@ -52,6 +51,7 @@ function startBomb (again, sess) {
       selected.turn = true
     }
   } else {
+    sess.rounds = (sess.rounds || 0) + 1
     var startTime = Date.now()
     var newText = generateString();
     sess.forEach((socket) => {
@@ -76,11 +76,20 @@ function endBomb (sess) {
   sess.inGame = false
   sess.forEach((socket) => {
     if (socket.turn) {
+      socket.blewUp = (socket.blewUp || 0) + 1
       socket.emit('LOSER')
-      socket.emit('bomb.new')
     }
+    socket.emit('bomb.new')
   })
-  startBomb(true, sess)
+  if (sess.rounds == MaxRounds) {
+    sess.forEach((socket) => {
+      socket.emit('game.end', socket.blewUp || 0)
+    })
+  } else {
+    setTimeout(function () {
+      startBomb(true, sess)
+    }, 10000)
+  }
 }
 
 function Handler (io) {
@@ -110,9 +119,10 @@ function Handler (io) {
       console.log(selected)
       selected.emit('bomb.you')
       selected.turn = true
-
     })
   })
 }
+
+Handler.sessions = sessions
 
 module.exports = Handler
