@@ -1,10 +1,10 @@
 var socket = io()
 
 socket.on('game.countdown', (data) => {
-  console.log(~~(data/1000))
+  console.log(data)
 })
 socket.on('bomb.sync', (data) => {
-  console.log('BOMB AT: ' + ~~(data/1000))
+  console.log('BOMB AT: ' + Math.floor(time))
 })
 socket.on('bomb.you', () => {
   console.log('Your Turn')
