@@ -1,8 +1,6 @@
 var uuid = require('uuid')
 const generateString = require('./generateString.js');
 
-var ALPHABET = 'qwertyuiopasdfghjklzxcvbnm'
-var VOWELS = 'aeiouy'
 var started = false
 var startTime = 0
 var lobby = []
@@ -74,7 +72,9 @@ function endBomb (sess) {
       socket.emit('bomb.new')
     }
   })
-  startBomb(true, sess)
+  setTimeout(function () {
+    startBomb(true, sess)
+  }, 10000)
 }
 
 function Handler (io) {
@@ -104,9 +104,10 @@ function Handler (io) {
       console.log(selected)
       selected.emit('bomb.you')
       selected.turn = true
-
     })
   })
 }
+
+Handler.sessions = sessions
 
 module.exports = Handler
