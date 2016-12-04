@@ -51,12 +51,12 @@ class Game {
 	}
 
 	clearInput() {
-		this.input.reset();
+		this.input.value = '';
 	}
 
 	setFuse(time) {
 		const percent = (TOTAL_TIME - time) / TOTAL_TIME;
-		this.fuse.style.strokeDashoffset = (percent * FUSE_LENGTH) + 1;
+		this.fuse.style.strokeDashoffset = (percent * FUSE_LENGTH) + 3;
 	}
 
 	containsLetters(value) {
@@ -121,15 +121,20 @@ class Game {
 			this.parent.classList.add('GameWait');
 			this.subtitle.textContent = WAIT_SUB;
 		}
+		this.clearInput();
 		this.isMyTurn = isMyTurn;
 	}
 
 	handleLoss() {
+		this.input.disabled = true;
 		this.parent.classList.add('GameExplode');
 	}
 
 	setRoundCount(count = 1) {
+		console.log('Round', count);
 		document.getElementById('roundCount').textContent = count;
+		this.input.disabled = false;
+		this.parent.classList.remove('GameExplode');
 	}
 
 	setPrepTime(num) {
@@ -146,6 +151,7 @@ class Game {
 		socket.on('bomb.you', () => this.setMyTurn(true));
 		socket.on('bomb.passed', () => this.setMyTurn(false));
 		socket.on('bomb.new', this.setRoundCount.bind(this));
+		socket.on('LOSER', this.handleLoss.bind(this));
 
 		socket.on('game.end', numExplosions => {})
 

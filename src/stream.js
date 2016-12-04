@@ -45,7 +45,7 @@ function startBomb (again, sess) {
     sess.inGame = true
     sess.newText = newText;
     var selected = sess[~~(Math.random() * sess.length)]
-    console.log(selected)
+    //console.log(selected)
     if(selected){
       selected.emit('bomb.you')
       selected.turn = true
@@ -98,7 +98,7 @@ function Handler (io) {
       lobby.push(socket)
     } else {
       started = true
-      startGame()
+      startGame(1000)
       lobby.push(socket)
     }
     socket.on('bomb.pass', function () {
@@ -114,9 +114,9 @@ function Handler (io) {
           return socket
         })
       }
-      console.log(select.length)
+      //console.log(select.length)
       var selected = select[~~(Math.random() * select.length)]
-      console.log(selected)
+      //console.log(selected)
       selected.emit('bomb.you')
       selected.turn = true
     })

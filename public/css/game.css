@@ -44,12 +44,26 @@ body {
 }
 .Game-bomb-wrapper {
 	margin-top: 1em;
+	position: relative;
 }
 
 .GameWait .Game-bomb {
 	opacity: 0.5;
 }
 .GameWait .Game-input {
+	visibility: hidden;
+}
+
+.Game-over {
+	position: absolute;
+	top: 0;
+	right: -56px;
+	visibility: hidden;
+}
+.GameExplode .Game-over {
+	visibility: visible;
+}
+.GameExplode .Game-bomb {
 	visibility: hidden;
 }
 
