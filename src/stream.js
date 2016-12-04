@@ -1,4 +1,5 @@
 var uuid = require('uuid')
+const generateString = require('./generateString.js');
 
 var ALPHABET = 'qwertyuiopasdfghjklzxcvbnm'
 var VOWELS = 'aeiouy'
@@ -6,7 +7,7 @@ var started = false
 var startTime = 0
 var lobby = []
 var sessions = {}
- 
+
 
 
 function startGame () {
@@ -27,17 +28,19 @@ function startGame () {
 function startBomb () {
   var id = uuid.v1()
   var startTime = Date.now()
+  var newText = generateString();
   var sess = sessions[id] = lobby.map((socket) => {
     socket.gameId = id
+    socket.emit('game.text', newText);
     return socket
   })
   lobby = []
   sess.inGame = true
-
+  sess.newText = newText;
   var selected = sess[~~(Math.random() * sess.length)]
   selected.emit('bomb.you')
   selected.turn = true
-  
+
   var interval = setInterval(function () {
     var now = Date.now()
     sess.forEach((socket) => {

@@ -1,6 +1,7 @@
 const { Manager, Swipe, Tap } = Hammer; // import Hammer;
 
 const FUSE_LENGTH = 415;
+const TOTAL_TIME = 30000;
 
 class Game {
 	constructor(
@@ -42,8 +43,9 @@ class Game {
 		this.input.reset();
 	}
 
-	setFuse(percent) {
-		this.fuse.style.strokeDashoffset = percent * this.fuseLength;
+	setFuse(time) {
+		const percent = (TOTAL_TIME - time) / TOTAL_TIME;
+		this.fuse.style.strokeDashoffset = percent * FUSE_LENGTH;
 	}
 
 	containsLetters(value) {
@@ -98,6 +100,15 @@ class Game {
 			.catch(err => ({ ok: false }))
 			.then(response => response.ok)
 	}
+
+	myTurn() {
+
+	}
+
+	attachSocket(socket) {
+		socket.on('bomb.sync', this.setFuse.bind(this));
+		socket.on('game.text', this.setText.bind(this));
+	}
 }
 
-new Game().setText('ke');
+new Game().attachSocket(socket);

@@ -27,7 +27,6 @@ body {
 .Game-input {
 	font-size: 2em;
 	padding: 0.2em;
-	font-family: inherit;
 	border-radius: 0.2em;
 	border: 1px solid gray;
 }
