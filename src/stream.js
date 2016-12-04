@@ -88,7 +88,7 @@ function Handler (io) {
     }
     socket.on('bomb.pass', function () {
       if (!socket.turn) return
-
+      socket.emit('bomb.passed')
       socket.turn = false
       socket.done = true
       var select = sessions[socket.gameId].filter((socket) => (!socket.done))
