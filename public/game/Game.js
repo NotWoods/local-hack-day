@@ -1,7 +1,7 @@
 const { Manager, Swipe, Tap } = Hammer; // import Hammer;
 
 const FUSE_LENGTH = 415;
-const TOTAL_TIME = 30;
+const TOTAL_TIME = 3000;
 
 const READY_SUB = 'Your word must contain the letters:';
 const WAIT_SUB = 'Waiting to receive the bomb...'
@@ -41,6 +41,7 @@ class Game {
 
 		input.addEventListener('keyup', this.handleChange);
 		bomb.addEventListener('animationend',	() => this.bomb.style.animationName = '');
+		this.setMyTurn(false);
 	}
 
 	setText(newLetters) {
@@ -53,7 +54,7 @@ class Game {
 	}
 
 	setFuse(time) {
-		const percent = (TOTAL_TIME - Math.floor(time)) / TOTAL_TIME;
+		const percent = Math.floor((TOTAL_TIME - time) / TOTAL_TIME);
 		this.fuse.style.strokeDashoffset = percent * FUSE_LENGTH;
 	}
 
@@ -69,7 +70,7 @@ class Game {
 				return;
 			}
 
-			socket.emit('bomb.pass')
+			socket.emit('bomb.pass');
 
 			let animationName;
 			switch (e.direction) {
@@ -132,6 +133,8 @@ class Game {
 			this.setText(text);
 			this.valid = Promise.resolve(false);
 		});
+		socket.on('bomb.you', () => this.setMyTurn(true));
+		socket.on('bomb.passed', () => this.setMyTurn(false));
 	}
 }
 
