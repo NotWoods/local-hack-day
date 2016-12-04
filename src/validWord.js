@@ -4,7 +4,7 @@ let readErr;
 
 fs.readFile('./sowpods.txt','utf8', (err, data) => {
   readErr = err;
-  data.split('\r\n').forEach(word => DIC[word] = 1);
+  data.split(/\r?\n/).forEach(word => DIC[word] = 1);
 })
 
 /**
