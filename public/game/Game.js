@@ -128,13 +128,20 @@ class Game {
 	handleLoss() {
 		this.input.disabled = true;
 		this.parent.classList.add('GameExplode');
+		this.lost = true;
 	}
 
 	setRoundCount(count = 1) {
 		console.log('Round', count);
 		document.getElementById('roundCount').textContent = count;
-		this.input.disabled = false;
-		this.parent.classList.remove('GameExplode');
+	}
+
+	resetLost() {
+		if (this.lost) {
+			this.lost = false;
+			this.input.disabled = false;
+			this.parent.classList.remove('GameExplode');
+		}
 	}
 
 	setPrepTime(num) {
@@ -143,7 +150,10 @@ class Game {
 
 	attachSocket(socket) {
 		socket.on('game.countdown', this.setPrepTime.bind(this));
-		socket.on('bomb.sync', this.setFuse.bind(this));
+		socket.on('bomb.sync', num => {
+			this.setFuse(num)
+			this.resetLost()
+		});
 		socket.on('game.text', (text) => {
 			this.setText(text);
 			this.valid = Promise.resolve(false);

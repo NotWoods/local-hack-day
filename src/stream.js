@@ -1,6 +1,6 @@
 var uuid = require('uuid')
 const generateString = require('./generateString.js');
-const MaxRounds = 0
+const MaxRounds = 2
 var started = false
 var startTime = 0
 var lobby = []
@@ -81,7 +81,7 @@ function endBomb (sess) {
     }
     socket.emit('bomb.new', sess.rounds)
   })
-  if (sess.rounds == MaxRounds) {
+  if (sess.rounds >= MaxRounds) {
     sess.forEach((socket) => {
       socket.emit('game.end', socket.blewUp || 0)
     })
