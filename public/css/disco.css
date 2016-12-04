@@ -1,0 +1,7 @@
+body {
+	background-image: url('background.gif');
+	background-size: 35%;
+	background-repeat: repeat-y repeat-x;
+	background-attachment: fixed;
+	min-height: 100%;
+}
