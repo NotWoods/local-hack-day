@@ -99,7 +99,7 @@ function Handler (io) {
       lobby.push(socket)
     } else {
       started = true
-      startGame(process.argv[2] || undefined)
+      startGame(process.argv[2] ? process.argv[2] * 1000 : undefined)
       lobby.push(socket)
     }
     socket.on('bomb.pass', function () {
