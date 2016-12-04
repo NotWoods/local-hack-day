@@ -1,23 +1,32 @@
 const { Manager, Swipe, Tap } = Hammer; // import Hammer;
 
 const FUSE_LENGTH = 415;
-const TOTAL_TIME = 30000;
+const TOTAL_TIME = 30;
+
+const READY_SUB = 'Your word must contain the letters:';
+const WAIT_SUB = 'Waiting to receive the bomb...'
+
+const inputId = 'wordInput',
+			textId = 'letterSet',
+			fuseId = 'fuse',
+			bombId = 'bomb',
+			parentId = 'game',
+			subtitleId = 'subtitle';
 
 class Game {
-	constructor(
-		inputId = 'wordInput',
-		textId = 'letterSet',
-		fuseId = 'fuse',
-		bombId = 'bomb'
-	) {
+	constructor() {
 		this.valid = Promise.resolve(false);
 		this.letters = '';
+		this.isMyTurn = false;
+
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this)
 
 		const input = document.getElementById(inputId);
 		const text = document.getElementById(textId);
 		const fuse = document.getElementById(fuseId);
+		const parent = document.getElementById(parentId);
+		const subtitle = document.getElementById(subtitleId);
 		fuse.style.strokeDashoffset = 0;
 
 		const bomb = document.getElementById(bombId);
@@ -25,7 +34,7 @@ class Game {
 		mc.add(new Swipe({ direction: Hammer.DIRECTION_ALL }));
 		mc.add(new Tap());
 
-		Object.assign(this, { input, text, fuse, bomb, mc });
+		Object.assign(this, { input, text, fuse, bomb, mc, parent, subtitle });
 
 		mc.on('swipe', this.handleSubmit);
 		mc.on('tap', this.handleSubmit);
@@ -44,7 +53,7 @@ class Game {
 	}
 
 	setFuse(time) {
-		const percent = (TOTAL_TIME - time) / TOTAL_TIME;
+		const percent = (TOTAL_TIME - Math.floor(time)) / TOTAL_TIME;
 		this.fuse.style.strokeDashoffset = percent * FUSE_LENGTH;
 	}
 
@@ -54,6 +63,7 @@ class Game {
 
 	handleSubmit(e) {
 		this.valid.then((isValid) => {
+			if (!this.isMyTurn) return;
 			if (!isValid) {
 				this.bomb.style.animationName = 'shake';
 				return;
@@ -101,13 +111,27 @@ class Game {
 			.then(response => response.ok)
 	}
 
-	myTurn() {
+	setMyTurn(isMyTurn) {
+		if (isMyTurn) {
+			this.parent.classList.remove('GameWait');
+			this.subtitle.textContent = READY_SUB;
+		} else {
+			this.parent.classList.add('GameWait');
+			this.subtitle.textContent = WAIT_SUB;
+		}
+		this.isMyTurn = isMyTurn;
+	}
 
+	handleLoss() {
+		this.parent.classList.add('Game--lost');
 	}
 
 	attachSocket(socket) {
 		socket.on('bomb.sync', this.setFuse.bind(this));
-		socket.on('game.text', this.setText.bind(this));
+		socket.on('game.text', (text) => {
+			this.setText(text);
+			this.valid = Promise.resolve(false);
+		});
 	}
 }
 

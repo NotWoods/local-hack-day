@@ -6,9 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<section class="Game">
-		<span class="Game-subtitle bodytext">Your word must contain the letters:</span>
-		<h1 class="Game-letters" id="letterSet"></h1>
+	<section class="Game GameWait" id="game">
+		<span id='subtitle' class="Game-subtitle bodytext">Your word must contain the letters:</span>
+		<h1 class="Game-letters" id="letterSet">...</h1>
 
 		<input id="wordInput" type="text" class="Game-input bodytext">
 
@@ -21,6 +21,7 @@
 					<path fill="#535456" d="M659.8 636c30 38 29 76 13 132 0 0 42.8-11 39-65-5-71.2-52-67-52-67z"/>
 				</g>
 			</svg>
+			<img src="explosion.gif" hidden>
 		</div>
 	</section>
 	<section class="Wait">
