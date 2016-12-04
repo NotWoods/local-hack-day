@@ -73,7 +73,7 @@ function startBomb (again, sess) {
 }
 
 function endBomb (sess) {
-  sess.round += 1
+  sess.rounds += 1
   sess.inGame = false
   sess.forEach((socket) => {
     if (socket.turn) {
@@ -99,7 +99,7 @@ function Handler (io) {
       lobby.push(socket)
     } else {
       started = true
-      startGame(process.argv[3] || undefined)
+      startGame(process.argv[2] || undefined)
       lobby.push(socket)
     }
     socket.on('bomb.pass', function () {
