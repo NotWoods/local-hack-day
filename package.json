@@ -1,14 +1,17 @@
 {
-  "name": "local-hack-day",
+  "name": "passthebomb",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "NotWoods/local-hack-day",
+  "description": "Based on the board game, Pass the Bomb",
   "license": "MIT",
   "dependencies": {
     "hapi": "^16.0.1",
     "inert": "^4.0.3",
     "socket.io": "^1.7.1",
-    "uuid": "^3.0.1",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
     "whatwg-fetch": "^2.0.1"
   },
   "scripts": {

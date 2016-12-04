@@ -124,9 +124,9 @@ function Handler (io) {
 
     socket.on('disconnect', function () {
       var sess = sessions[socket.gameId]
+      if (!sess) return;
       for(var i = 0;i < sess.length;i++) {
-        if (socket.id == sess[i].id)
-          break
+        if (socket.id == sess[i].id) break
       }
       sess.splice(i,1)
     })
