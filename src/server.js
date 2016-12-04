@@ -5,9 +5,7 @@ const { publicFiles } = require('./public.js');
 
 const server = new Server();
 server.connection({
-	port: process.env.NODE_ENV === 'production'
-		? 80
-		: 7000
+	port: 80
 });
 
 server.register(Inert).then(() => server.route(publicFiles));
