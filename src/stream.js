@@ -79,7 +79,7 @@ function endBomb (sess) {
       socket.blewUp = (socket.blewUp || 0) + 1
       socket.emit('LOSER')
     }
-    socket.emit('bomb.new')
+    socket.emit('bomb.new', sess.rounds)
   })
   if (sess.rounds == MaxRounds) {
     sess.forEach((socket) => {
