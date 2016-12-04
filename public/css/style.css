@@ -54,3 +54,7 @@ a.buttons:hover {
     background-color: #DEF ;
 }
 
+.bomb-img, .title, .buttons {
+    max-width: 75%;
+}
+
