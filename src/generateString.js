@@ -14,7 +14,7 @@ module.exports = function generateString() {
 	const c = rand(20);
 
 	let str = `${consonants[c]}${vowels[v]}`;
-	if (n > .5) str += consonants[rand(20)];
+	// if (n > .5) str += consonants[rand(20)];
 	return str;
 }
 
