@@ -14,12 +14,12 @@ function startGame () {
   startTime = Date.now()
   var interval = setInterval(() => {
     var now = Date.now()
-
     lobby.forEach((socket) => {
       socket.emit('game.countdown', 60000 - (now - startTime))
     }, 1000)
   }, 1000)
   setTimeout(() => {
+    started = false
     clearInterval(interval)
     startBomb()
   }, 60000)
@@ -40,8 +40,11 @@ function startBomb (again, sess) {
     sess.inGame = true
     sess.newText = newText;
     var selected = sess[~~(Math.random() * sess.length)]
-    selected.emit('bomb.you')
-    selected.turn = true
+    console.log(selected)
+    if(selected){
+      selected.emit('bomb.you')
+      selected.turn = true
+    }
   } else {
     var startTime = Date.now()
     var newText = generateString();
@@ -89,13 +92,16 @@ function Handler (io) {
       socket.turn = false
       socket.done = true
       var select = sessions[socket.gameId].filter((socket) => (!socket.done))
+
       if (!select.length) {
         select = sessions[socket.gameId].map((socket) => {
           socket.done = false
           return socket
         })
       }
+      console.log(select.length)
       var selected = select[~~(Math.random() * select.length)]
+      console.log(selected)
       selected.emit('bomb.you')
       selected.turn = true
 
