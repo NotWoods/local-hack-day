@@ -1,6 +1,6 @@
 const { Manager, Swipe, Tap } = Hammer; // import Hammer;
 
-const FUSE_LENGTH = 410;
+const FUSE_LENGTH = 415;
 const TOTAL_TIME = 30000;
 
 const READY_SUB = 'Your word must contain the letters:';
@@ -56,7 +56,7 @@ class Game {
 
 	setFuse(time) {
 		const percent = (TOTAL_TIME - time) / TOTAL_TIME;
-		this.fuse.style.strokeDashoffset = percent * FUSE_LENGTH;
+		this.fuse.style.strokeDashoffset = (percent * FUSE_LENGTH) + 1;
 	}
 
 	containsLetters(value) {
@@ -128,7 +128,16 @@ class Game {
 		this.parent.classList.add('Game--lost');
 	}
 
+	setRoundCount(count) {
+		document.getElementById().textContent = count;
+	}
+
+	setPrepTime(num) {
+		this.subtitle.textContent = `Starting in ${Math.floor(num / 1000)}`;
+	}
+
 	attachSocket(socket) {
+		socket.on('game.countdown', this.setPrepTime.bind(this));
 		socket.on('bomb.sync', this.setFuse.bind(this));
 		socket.on('game.text', (text) => {
 			this.setText(text);
@@ -136,7 +145,7 @@ class Game {
 		});
 		socket.on('bomb.you', () => this.setMyTurn(true));
 		socket.on('bomb.passed', () => this.setMyTurn(false));
-		socket.on('bomb.new', () => this.roundCount++);
+		socket.on('bomb.new', this.setRoundCount.bind(this));
 
 		socket.on('game.end', numExplosions => {})
 	}
