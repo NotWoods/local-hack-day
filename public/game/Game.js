@@ -125,11 +125,11 @@ class Game {
 	}
 
 	handleLoss() {
-		this.parent.classList.add('Game--lost');
+		this.parent.classList.add('GameExplode');
 	}
 
-	setRoundCount(count) {
-		document.getElementById().textContent = count;
+	setRoundCount(count = 1) {
+		document.getElementById('roundCount').textContent = count;
 	}
 
 	setPrepTime(num) {
@@ -148,6 +148,8 @@ class Game {
 		socket.on('bomb.new', this.setRoundCount.bind(this));
 
 		socket.on('game.end', numExplosions => {})
+
+		return this;
 	}
 }
 

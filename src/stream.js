@@ -8,7 +8,7 @@ var sessions = {}
 
 
 
-function startGame () {
+function startGame (startDuration = 60000) {
   startTime = Date.now()
 
   function finishStartGame() {
@@ -21,11 +21,11 @@ function startGame () {
   var interval = setInterval(() => {
     var now = Date.now()
     lobby.forEach((socket) =>
-      socket.emit('game.countdown', 60000 - (now - startTime)),
+      socket.emit('game.countdown', startDuration - (now - startTime)),
     1000)
   }, 1000)
 
-  var finishInterval = setTimeout(finishStartGame, 60000)
+  var finishInterval = setTimeout(finishStartGame, startDuration)
   return finishStartGame;
 }
 
