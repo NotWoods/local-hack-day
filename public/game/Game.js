@@ -163,7 +163,7 @@ class Game {
 		socket.on('bomb.new', this.setRoundCount.bind(this));
 		socket.on('LOSER', this.handleLoss.bind(this));
 
-		socket.on('game.end', numExplosions => console.log(`Game over, you blew up ${numExplosions} time(s)`))
+		socket.on('game.end', numExplosions => alert(`Game over, you blew up ${numExplosions} time(s)`));
 
 		return this;
 	}
