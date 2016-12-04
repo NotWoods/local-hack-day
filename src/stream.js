@@ -36,14 +36,14 @@ function startBomb (again, sess) {
     var newText = generateString();
     var sess = sessions[id] = lobby.map((socket) => {
       socket.gameId = id
-      socket.emit('bomb.new')
+      socket.emit('bomb.new', 0 )
       socket.emit('game.text', newText);
       return socket
     })
     lobby = []
 
     sess.inGame = true
-    sess.rounds = (sess.rounds || 0) + 1
+    sess.rounds = 0
     sess.newText = newText;
     var selected = sess[~~(Math.random() * sess.length)]
     //console.log(selected)
