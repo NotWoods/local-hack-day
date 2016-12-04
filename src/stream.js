@@ -12,17 +12,23 @@ var sessions = {}
 
 function startGame () {
   startTime = Date.now()
-  var interval = setInterval(() => {
-    var now = Date.now()
-    lobby.forEach((socket) => {
-      socket.emit('game.countdown', 60000 - (now - startTime))
-    }, 1000)
-  }, 1000)
-  setTimeout(() => {
+
+  function finishStartGame() {
     started = false
     clearInterval(interval)
-    startBomb()
-  }, 60000)
+    clearInterval(finishInterval)
+    startBomb();
+  }
+
+  var interval = setInterval(() => {
+    var now = Date.now()
+    lobby.forEach((socket) =>
+      socket.emit('game.countdown', 60000 - (now - startTime)),
+    1000)
+  }, 1000)
+
+  var finishInterval = setTimeout(finishStartGame, 60000)
+  return finishStartGame;
 }
 
 function startBomb (again, sess) {
