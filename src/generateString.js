@@ -9,7 +9,7 @@ function rand(max) {
  * @returns {string} Random string 2-3 letters long
  */
 module.exports = function generateString() {
-	const n = rand(1);
+	const n = Math.random();
 	const v = rand(4);
 	const c = rand(20);
 
@@ -17,3 +17,5 @@ module.exports = function generateString() {
 	if (n > .5) str += consonants[rand(20)];
 	return str;
 }
+
+// console.log(module.exports());
