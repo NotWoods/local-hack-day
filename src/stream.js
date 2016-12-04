@@ -52,7 +52,6 @@ function startBomb (again, sess) {
       selected.turn = true
     }
   } else {
-    sess.rounds = (sess.rounds || 0) + 1
     var startTime = Date.now()
     var newText = generateString();
     sess.forEach((socket) => {
@@ -74,6 +73,7 @@ function startBomb (again, sess) {
 }
 
 function endBomb (sess) {
+  sess.round += 1
   sess.inGame = false
   sess.forEach((socket) => {
     if (socket.turn) {
