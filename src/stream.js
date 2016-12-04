@@ -43,6 +43,7 @@ function startBomb (again, sess) {
     lobby = []
 
     sess.inGame = true
+    sess.rounds = (sess.rounds || 0) + 1
     sess.newText = newText;
     var selected = sess[~~(Math.random() * sess.length)]
     //console.log(selected)
