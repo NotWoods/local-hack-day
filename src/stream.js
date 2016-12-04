@@ -46,7 +46,7 @@ function startBomb (again, sess) {
     sess.rounds = 0
     sess.newText = newText;
     var selected = sess[~~(Math.random() * sess.length)]
-    //console.log(selected)
+    console.log(selected)
     if(selected){
       selected.emit('bomb.you')
       selected.turn = true
@@ -73,7 +73,7 @@ function startBomb (again, sess) {
 }
 
 function endBomb (sess) {
-  sess.round += 1
+  sess.rounds += 1
   sess.inGame = false
   sess.forEach((socket) => {
     if (socket.turn) {
@@ -120,6 +120,15 @@ function Handler (io) {
       //console.log(selected)
       selected.emit('bomb.you')
       selected.turn = true
+    })
+
+    socket.on('disconnect', function () {
+      var sess = session[socket.gameId]
+      for(var i = 0;i < sess.length;i++) {
+        if (socket.id == sess[i].id)
+          break
+      }
+      sess.splice(i,1)
     })
   })
 }
