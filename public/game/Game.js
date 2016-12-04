@@ -10,7 +10,8 @@ const inputId = 'wordInput',
 			textId = 'letterSet',
 			fuseId = 'fuse',
 			bombId = 'bomb',
-			parentId = 'game';
+			parentId = 'game',
+			subtitleId = 'subtitle';
 
 class Game {
 	constructor() {
@@ -25,6 +26,7 @@ class Game {
 		const text = document.getElementById(textId);
 		const fuse = document.getElementById(fuseId);
 		const parent = document.getElementById(parentId);
+		const subtitle = document.getElementById(subtitleId);
 		fuse.style.strokeDashoffset = 0;
 
 		const bomb = document.getElementById(bombId);
@@ -32,7 +34,7 @@ class Game {
 		mc.add(new Swipe({ direction: Hammer.DIRECTION_ALL }));
 		mc.add(new Tap());
 
-		Object.assign(this, { input, text, fuse, bomb, mc, parent });
+		Object.assign(this, { input, text, fuse, bomb, mc, parent, subtitle });
 
 		mc.on('swipe', this.handleSubmit);
 		mc.on('tap', this.handleSubmit);
@@ -112,8 +114,10 @@ class Game {
 	setMyTurn(isMyTurn) {
 		if (isMyTurn) {
 			this.parent.classList.remove('GameWait');
+			this.subtitle.textContent = READY_SUB;
 		} else {
 			this.parent.classList.add('GameWait');
+			this.subtitle.textContent = WAIT_SUB;
 		}
 		this.isMyTurn = isMyTurn;
 	}

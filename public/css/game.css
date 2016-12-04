@@ -46,6 +46,13 @@ body {
 	margin-top: 1em;
 }
 
+.GameWait .Game-bomb {
+	opacity: 0.5;
+}
+.GameWait .Game-input {
+	visibility: hidden;
+}
+
 @keyframes shake {
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
