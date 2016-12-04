@@ -29,7 +29,10 @@ exports.route = {
 	handler({ params: { word } }, reply) {
 		return validWord(word)
 			.then(result => reply(result))
-			.catch(() => reply('Word invalid').code(400));
+			.catch(() => {
+				console.log(word, Object.keys(DIC).length);
+				reply('Word invalid').code(400);
+			});
 	},
 }
 
