@@ -1,17 +1,10 @@
-import { parsed } from 'document-promises';
 import { percentTimeLeft } from '../state/selectors.js';
+import observeState from '../state/observerState.js';
 
 const ID = 'fuse';
-let node;
-parsed.then(() => { node = document.getElementById(ID); });
-
 const FUSE_LENGTH = 415;
+const node = document.getElementById(ID);
 
-let lastPercentage;
-export function onUpdate(state) {
-	const percentage = percentTimeLeft(state);
-	if (lastPercentage === percentage) return;
-
+export const onUpdate = observeState(percentTimeLeft, (percent) => {
 	node.style.strokeDashoffset = (percentage * FUSE_LENGTH) + 3;
-	lastPercentage = percentage;
-}
+})

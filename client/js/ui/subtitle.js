@@ -1,18 +1,11 @@
-import { parsed } from 'document-promises';
 import { isMyTurn } from '../state/selectors.js';
-
-const ID = 'subtitle';
-let node;
-parsed.then(() => { node = document.getElementById(ID); });
+import observeState from '../state/observerState.js';
 
 const READY = 'Your word must contain the letters:';
 const WAIT = 'Waiting to receive the bomb...'
+const ID = 'subtitle';
+const node = document.getElementById(ID);
 
-let lastCheck;
-export function onUpdate(state) {
-	const myTurn = isMyTurn(state);
-	if (lastCheck === myTurn) return;
-
+export const onUpdate = observeState(isMyTurn, (myTurn) => {
 	node.textContent = myTurn ? READY : WAIT;
-	lastCheck = myTurn;
-}
+});

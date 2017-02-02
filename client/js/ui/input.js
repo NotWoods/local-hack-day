@@ -1,5 +1,6 @@
 import { parsed } from 'document-promises';
 import { isMyTurn, validWord } from '../state/selectors.js';
+import observeState from '../state/observerState.js';
 import submit from '../submit.js';
 
 const ID = 'wordInput';
@@ -25,29 +26,21 @@ function allPossibleCases(string) {
 	return result;
 }
 
-let letters;
-let myTurn;
-let gameover;
+const observeTurn = observeState(isMyTurn, (myTurn) => {
+	if (!myTurn) node.value = '';
+});
+const observeText = observeState(state => state.global.letters, (letters) => {
+	const possibleCases = allPossibleCases(newLetters);
+	const pattern = `.*(?:${possibleCases.join('|')}).*`;
+	node.pattern = pattern;
+});
 export function onUpdate(state) {
-	const isMyTurn = isMyTurn(state);
-	const newLetters = state.global.letters;
-
-	if (isMyTurn !== myTurn) {
-		if (!isMyTurn) node.value = '';
-	}
-
-	if (letters !== newLetters) {
-		const possibleCases = allPossibleCases(newLetters);
-		const pattern = `.*(?:${possibleCases.join('|')}).*`;
-		node.pattern = pattern;
-	}
-
-	letters = newLetters;
-	myTurn = isMyTurn;
+	observeTurn(state);
+	observeText(state);
 }
 
-function handleChange({ keyCode, target: { value } }) {
-	currentText = value;
+function handleChange({ keyCode, target }) {
+	currentText = target.value;
 
 	if (keyCode === 13) {
 		submit();

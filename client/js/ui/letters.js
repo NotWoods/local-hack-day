@@ -1,13 +1,8 @@
-import { parsed } from 'document-promises';
+import observeState from '../state/observerState.js';
 
 const ID = 'letterSet';
-let node;
-parsed.then(() => { node = document.getElementById(ID); });
+const node = document.getElementById(ID);
 
-let lastText;
-export function onUpdate({ global: { letters } }) {
-	if (lastText === letters) return;
-
-	node.textContent = letters
-	lastText = letters;
-}
+export const onUpdate = observeState(state => state.global.letters, (letters) => {
+	node.textContent = letters;
+});
