@@ -1,5 +1,6 @@
 import { parsed } from 'document-promises';
 import { isMyTurn, validWord } from '../state/selectors.js';
+import submit from '../submit.js';
 
 const ID = 'wordInput';
 let node;
