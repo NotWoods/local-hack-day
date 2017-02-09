@@ -6,8 +6,11 @@
   "description": "Based on the board game, Pass the Bomb",
   "license": "MIT",
   "dependencies": {
+    "document-promises": "^3.1.0",
+    "hammer": "^0.0.5",
     "hapi": "^16.0.1",
     "inert": "^4.0.3",
+    "redux": "^3.6.0",
     "socket.io": "^1.7.1",
     "uuid": "^3.0.1"
   },

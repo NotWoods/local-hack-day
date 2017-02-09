@@ -132,6 +132,10 @@ debug@2.3.3:
   dependencies:
     ms "0.7.2"
 
+document-promises@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/document-promises/-/document-promises-3.1.0.tgz#53a21e7f45da3c91d58dbd516061f6803ec4a9aa"
+
 engine.io-client@1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-1.8.1.tgz#71237e9bbce04862675d4d6bfbef351c8b6a35a3"
@@ -170,6 +174,10 @@ engine.io@1.8.1:
     debug "2.3.3"
     engine.io-parser "1.3.1"
     ws "1.1.1"
+
+hammer@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/hammer/-/hammer-0.0.5.tgz#0ea1bf81cf7eade639aa0417272c27182c5e8764"
 
 hapi@^16.0.1:
   version "16.0.1"
@@ -266,9 +274,27 @@ joi@10.x.x:
     items "2.x.x"
     topo "2.x.x"
 
+js-tokens@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
+
 json3@3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
+
+lodash-es@^4.2.1:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
+
+lodash@^4.2.1:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+
+loose-envify@^1.1.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
+  dependencies:
+    js-tokens "^3.0.0"
 
 lru-cache@4.0.x:
   version "4.0.2"
@@ -365,6 +391,15 @@ pseudomap@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
 
+redux@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-3.6.0.tgz#887c2b3d0b9bd86eca2be70571c27654c19e188d"
+  dependencies:
+    lodash "^4.2.1"
+    lodash-es "^4.2.1"
+    loose-envify "^1.1.0"
+    symbol-observable "^1.0.2"
+
 shot@3.x.x:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/shot/-/shot-3.4.0.tgz#e7125ee72575ae5218349e933636808d790d4b92"
@@ -436,6 +471,10 @@ subtext@^4.3.x:
     hoek "4.x.x"
     pez "2.x.x"
     wreck "10.x.x"
+
+symbol-observable@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
 to-array@0.1.4:
   version "0.1.4"
