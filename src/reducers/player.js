@@ -1,4 +1,4 @@
-import { NEW_ROUND, SYNC, GAME_OVER } from './messages';
+import { NEW_ROUND, SYNC, GAME_OVER } from '../messages';
 
 const defaultState = Object.freeze({
 	me: '', // Stores player ID

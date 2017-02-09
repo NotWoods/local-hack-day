@@ -1,4 +1,4 @@
-
+import { PLAYER_ENTERED, BLEW_UP, NEW_ROUND, FOUND_WORD } from '../messages.js';
 
 const defaultState = Object.freeze({
 	players: [], // players in the game

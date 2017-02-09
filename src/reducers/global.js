@@ -1,4 +1,4 @@
-import { NEW_ROUND, SYNC, COUNTDOWN, PASS_BOMB, GAME_OVER } from './messages';
+import { NEW_ROUND, SYNC, COUNTDOWN, PASS_BOMB, GAME_OVER } from '../messages';
 
 const maxTime = parseInt(process.env.MAX_TIME, 10) || 60;
 const countdown = parseInt(process.env.COUNTDOWN_START, 10) || 60;

@@ -34,11 +34,7 @@ export function spellCheck(word) {
 }
 
 export function validWord(state, word) {
-	if (!containsLetters(state, word) || !unusedWord(state, word)) {
-		return Promise.resolve(false);
-	} else {
-		return spellCheck(word);
-	}
+	return containsLetters(state, word) && unusedWord(state, word);
 }
 
 export function gameOver({ global }) {
