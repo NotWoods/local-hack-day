@@ -6,6 +6,7 @@
   "description": "Based on the board game, Pass the Bomb",
   "license": "MIT",
   "dependencies": {
+    "byline": "^5.0.0",
     "document-promises": "^3.1.0",
     "hammer": "^0.0.5",
     "hapi": "^16.0.1",
