@@ -42,3 +42,10 @@ export function playerEntered(socket) {
 export function countdown(newTime) {
 	return { type: COUNTDOWN, payload: newTime };
 }
+
+/**
+ * Indicates the round finished.
+ */
+export function playerBlewUp(id) {
+	return { type: BLEW_UP, payload: id };
+}

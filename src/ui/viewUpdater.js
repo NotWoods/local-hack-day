@@ -12,7 +12,12 @@ const READY_TEXT = 'Your word must contain the letters:';
 const WAIT_TEXT = 'Waiting to receive the bomb...';
 const FUSE_LENGTH = 415;
 
-export default function viewUpdater(store) {
+/**
+ * Observes redux store and updates the UI when needed
+ * @param {redux.Store} store
+ * @returns {Function} removeObservers function
+ */
+export default function createViewUpdater(store) {
 	getElements(UI);
 
 	const o1 = observeStore(store, isMyTurn, (myTurn) => {

@@ -12,7 +12,7 @@ export function initialize(path = 'sowpods.txt') {
 		stream.on('finish', resolve).on('error', reject)
 	)
 	.catch(error => { err = error; throw error; })
-	.then(() => dictionary)
+	.then(() => dictionary);
 }
 
 /**

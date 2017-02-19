@@ -45,9 +45,9 @@ export default function global(_state = defaultState, { type, payload }) {
 			if (state.countdown < 0) state.countdown = 0;
 			break;
 
-		case PASS_BOMB:
+		case FOUND_WORD:
 			state = newState(state);
-			state.holdingBomb = payload;
+			state.holdingBomb = payload.next;
 			break;
 
 		case GAME_OVER:

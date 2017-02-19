@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { countdown, newRound, tick } from '../messages.js';
+import { countdown, newRound, tick, playerBlewUp } from '../messages.js';
 import { gameStarted, maxTime, finishedGame } from '../selectors.js';
 
 function wait(time) {
@@ -8,6 +8,9 @@ function wait(time) {
 
 /**
  * Counts down and resolves when the timer reaches 0
+ * @param {Function} emit
+ * @param {Function} getState
+ * @returns {Promise<void>} resolves after timer has finished
  */
 function runCountdown(emit, getState) {
 	return new Promise((resolve) => {
@@ -18,7 +21,11 @@ function runCountdown(emit, getState) {
 	}).then(clearInterval);
 }
 
-function runRound() {
+/**
+ * @param {number} maxRounds
+ * @returns {Promise<void>} once all rounds are done
+ */
+function runRound(maxRounds = 3) {
 	const roundStart = Date.now();
 	emit(newRound());
 
@@ -29,8 +36,10 @@ function runRound() {
 
 	return wait(maxTime(getState())).then(() => {
 		clearInterval(timer);
+		const holder = currentPlayer(getState());
+		emit(playerBlewUp(holder));
 
-		if (!finishedGame(getState())) return runRound();
+		if (!finishedGame(getState(), maxRounds)) return runRound(maxRounds);
 	});
 }
 

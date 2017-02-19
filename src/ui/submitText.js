@@ -4,23 +4,34 @@ import { PASS_BOMB } from '../messages.js';
 
 const UI = { form: null, wordInput: null, bomb: null };
 
-let getState;
-let emit;
-
-export function initialize(socket, store) {
+/**
+ * Document must be parsed.
+ * @param {socket.Client} socket
+ * @param {redux.Store} store
+ * @returns {Function} submitText function
+ */
+export default function createSubmitText(socket, store) {
 	getElements(UI);
-	getState = store.getState;
-	emit = socket.emit;
-}
+	const getState = store.getState.bind(store);
+	const emit = socket.emit.bind(socket);
 
-export default function submitText(e) {
-	e.preventDefault();
+	/**
+	 * Submits whatever value is currently inside the wordInput box to the server
+	 * @param {FormEvent} e
+	 */
+	return function submitText(e) {
+		e.preventDefault();
 
-	const word = UI.wordInput.value;
-	const valid = isMyTurn(getState()) && validWord(getState(), word);
+		const word = UI.wordInput.value;
+		const valid = isMyTurn(getState()) && validWord(getState(), word);
 
-	if (!valid) UI.bomb.style.animationame = 'shake';
-	UI.bomb.style.animationPlayState = 'running';
+		if (!valid) UI.bomb.style.animationame = 'shake';
+		UI.bomb.style.animationPlayState = 'running';
 
-	if (valid) emit(PASS_BOMB, word);
+		if (valid) {
+			emit(PASS_BOMB, word, (err) => {
+				if (err) UI.bomb.style.animationame = 'shake';
+			});
+		}
+	}
 }

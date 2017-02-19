@@ -1,57 +1,54 @@
 import { createStore, combineReducers } from 'redux';
 import { playerEntered, countdown } from '../messages.js';
 import { gameStarted } from '../selectors.js';
+import startGame from './startGame.js';
+import endGame from './endGame.js';
 
-export const games = new Map(); // Map<id, Redux.Store>
+export const games = new Map(); // Map<id, redux.Store>
+
+/**
+ * @param {socket.Namespace} nsp
+ */
 function newStore(nsp) {
 	const store = createStore(combineReducers({ global, spectator }));
-
 	store.emit = (action) => {
 		store.dispatch(action);
 		nsp.emit(action.type, action.payload);
 	};
-	nsp.store = store;
+
 	return store;
 }
 
 /**
- * Counts down and resolves when the timer reaches 0
- */
-function runCountdown({ emit, getState }) {
-	return new Promise((resolve) => {
-		const timer = setInterval(() => {
-			emit(countdown());
-			if (gameStarted(getState())) resolve(timer);
-		}, 1000);
-	}).then(clearInterval);
-}
-
-function startGame(gameState) {
-	return runCountdown(gameState).then(() => {
-
-	});
-}
-
-/**
  * Games are represented as seperate namespaces rather than socket rooms
+ *
+ * @param {socket.Server} io
  * @param {string} path to use for the namespace.
  * @returns {socket.Namespace} namespace representing this game
  */
-export function newGame(path) {
+export function newGame(io, path) {
 	if (games.has(path)) return games.get(path);
 
 	const nsp = io.of(path);
-	games.set(path, nsp);
 	const store = newStore(nsp);
+	games.set(path, store);
 
 	let ready = false;
+	function tryToStart() {
+		if (ready) return;
+		ready = true;
+
+		return startGame(store.emit, store.getState)
+			.then(endGame())
+			.then(() => games.delete(path));
+	}
+
 	nsp.on('connection', (socket) => {
+		// TODO: get name of player / wheter or not they are a spectator
 		store.emit(playerEntered(socket));
-		if (!ready) {
-			ready = true;
-			startGame(store);
-		}
+		tryToStart();
+		handleClientEvents(socket, store);
 	});
 
-	return nsp;
+	return store;
 }

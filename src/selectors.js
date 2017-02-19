@@ -1,5 +1,5 @@
-export function isMyTurn({ global, player }) {
-	return global.holding_bomb === player.me;
+export function isMyTurn({ global, player }, me) {
+	return global.holding_bomb === (me || player.me);
 }
 
 export function percentTimeLeft({ global }) {
@@ -12,6 +12,10 @@ export function containsLetters({ global }, word) {
 
 export function unusedWord({ global }, word) {
 	return !global.wordsUsed.has(word.toUpperCase());
+}
+
+export function currentPlayer({ global }) {
+	return global.holdingBomb;
 }
 
 export function nextPlayer({ global, spectator }) {
@@ -51,4 +55,20 @@ export function maxTime({ global }) {
 
 export function finishedGame({ global }, maxRounds) {
 	return global.rounds >= maxRounds;
+}
+
+export function currentLead({ spectator }) {
+	const leads = new Set();
+	let lowestScore = Number.MAX_VALUE;
+	spectator.forEach(({ id, score }) => {
+		if (score <= lowestScore) {
+			if (score < lowestScore) {
+				leads.clear();
+				lowestScore = score;
+			}
+			leads.add(id);
+		}
+	});
+
+	return Array.from(leads);
 }
