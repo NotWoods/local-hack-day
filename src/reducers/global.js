@@ -1,4 +1,4 @@
-import { NEW_ROUND, SYNC, COUNTDOWN, PASS_BOMB, GAME_OVER } from '../messages';
+import { NEW_ROUND, TICK, SYNC, COUNTDOWN, PASS_BOMB, GAME_OVER } from '../messages';
 
 const maxTime = parseInt(process.env.MAX_TIME, 10) || 60;
 const countdown = parseInt(process.env.COUNTDOWN_START, 10) || 60;
@@ -10,7 +10,7 @@ const defaultState = Object.freeze({
 	holdingBomb: '', // Player that is holding the bomb
 	letters: '', // Current letters needed in a word
 	winner: '', // Name of the winner at the end of the game
-	countdown, // Current countdown number
+	countdown, // Current countdown number, before the game has started
 });
 
 function newState(oldState) {
@@ -28,6 +28,11 @@ export default function global(_state = defaultState, { type, payload }) {
 			state.letters = payload.letters;
 			break;
 
+		case TICK:
+			state = newState(state);
+			state.timeLeft = Math.min(0, state.maxTime - payload);
+			break;
+
 		case SYNC:
 			state = Object.assign({}, state, payload.global);
 			break;
@@ -36,6 +41,8 @@ export default function global(_state = defaultState, { type, payload }) {
 			state = newState(state);
 			if (payload) state.countdown = payload;
 			else state.countdown--;
+
+			if (state.countdown < 0) state.countdown = 0;
 			break;
 
 		case PASS_BOMB:

@@ -40,3 +40,15 @@ export function validWord(state, word) {
 export function gameOver({ global }) {
 	return Boolean(global.winner);
 }
+
+export function gameStarted({ global }) {
+	return global.countdown === 0;
+}
+
+export function maxTime({ global }) {
+	return global.maxTime;
+}
+
+export function finishedGame({ global }, maxRounds) {
+	return global.rounds >= maxRounds;
+}
