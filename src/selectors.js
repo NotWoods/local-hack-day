@@ -10,8 +10,13 @@ export function containsLetters({ global }, word) {
 	return word.toUpperCase().includes(global.letters);
 }
 
-export function unusedWord({ global }, word) {
-	return !global.wordsUsed.has(word.toUpperCase());
+export function unusedWord({ player, spectator }, word) {
+	let wordsUsed;
+	if (player) wordsUsed = player.wordsUsed;
+	else {
+		wordsUsed = spectator.pastRounds[spectator.pastRounds.length - 1].wordsUsed;
+	}
+	return !wordsUsed.has(word.toUpperCase());
 }
 
 export function currentPlayer({ global }) {

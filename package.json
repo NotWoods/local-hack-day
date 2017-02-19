@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "byline": "^5.0.0",
+    "denodeify": "^1.2.1",
     "document-promises": "^3.1.0",
     "hammer": "^0.0.5",
     "hapi": "^16.0.1",
@@ -17,9 +18,14 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "blue-tape": "^1.0.0",
+    "glob": "^7.1.1",
+    "require-from-string": "^1.2.1",
+    "rollup": "^0.41.4",
     "whatwg-fetch": "^2.0.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node bin/testAll.js"
   }
 }
