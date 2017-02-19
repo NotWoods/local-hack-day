@@ -10,6 +10,7 @@ export const CLIENT_DONE = 'bomb.send';
 export const PLAYER_ENTERED = 'player.new';
 export const FOUND_WORD = 'bomb.passed';
 export const PLAYER_ENTERED = 'connection';
+export const PLAYER_LEFT = 'disconnect';
 export const BLEW_UP = 'bomb.done';
 
 /**
@@ -36,6 +37,15 @@ export function playerEntered(socket) {
 }
 
 /**
+ * Fired when a player leaves this game
+ * @param {Socket|string} socket representing client, or the client's id
+ */
+export function playerLeft(socket) {
+	const id = typeof socket === 'string' ? socket : socket.id;
+	return { type: PLAYER_LEFT, payload: id };
+}
+
+/**
  * Reduces the time remaining before the game begins.
  * @param {number} [newTime] - if set, the countdown is moved to this time
  */
@@ -48,4 +58,18 @@ export function countdown(newTime) {
  */
 export function playerBlewUp(id) {
 	return { type: BLEW_UP, payload: id };
+}
+
+/**
+ * Fires when the game ends
+ */
+export function gameDone(winner) {
+	return { type: GAME_OVER, payload: { winner } };
+}
+
+/**
+ * Fired by the server when the client finds a valid word
+ */
+export function foundWord(word, id, next) {
+	return { type: FOUND_WORD, payload: { word, id, next } };
 }

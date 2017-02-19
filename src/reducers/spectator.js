@@ -34,6 +34,13 @@ export default function spectator(_state = defaultState, { type, payload }, glob
 			];
 			break;
 
+		case PLAYER_LEFT: {
+			state = newState(state);
+			const index = state.players.find(player => player.id === payload);
+			state.players.slice().splice(index, 1);
+			break;
+		}
+
 		case BLEW_UP: {
 			state = newState(state);
 			const index = state.players.find(player => player.id === payload);
