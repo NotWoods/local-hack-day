@@ -13,9 +13,8 @@ export function containsLetters({ global }, word) {
 export function unusedWord({ player, spectator }, word) {
 	let wordsUsed;
 	if (player) wordsUsed = player.wordsUsed;
-	else {
-		wordsUsed = spectator.pastRounds[spectator.pastRounds.length - 1].wordsUsed;
-	}
+	else wordsUsed = spectator.pastRounds[spectator.pastRounds.length - 1].wordsUsed;
+
 	return !wordsUsed.has(word.toUpperCase());
 }
 
@@ -59,7 +58,7 @@ export function maxTime({ global }) {
 }
 
 export function finishedGame({ global }, maxRounds) {
-	return global.rounds >= maxRounds;
+	return global.round >= maxRounds;
 }
 
 export function currentLead({ spectator }) {

@@ -1,3 +1,6 @@
+import { shim } from 'string.prototype.padstart';
+shim();
+
 /**
  * Uses object keys to lookup elements by ID
  * @param {Object} obj where keys are document IDs
@@ -51,9 +54,11 @@ export function allPossibleCases(string) {
 	const result = [];
 
 	const bits = string.length;
-	for (let i = 0; i.toString(2).length < bits; i++) {
-		const binary = i.toString(2).padStart(bits, '0').split('');
-		const cases = binary.map((b, idx) => (b === '1' ? upper[idx] : lower[idx]));
+	for (let i = 0; i.toString(2).length <= bits; i++) {
+		const binary = i.toString(2).padStart(bits, '0');
+		const cases = Array.from(binary)
+			.map((b, idx) => (b === '1' ? upper[idx] : lower[idx]))
+			.join('');
 		result.push(cases);
 	}
 

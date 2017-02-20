@@ -25,7 +25,7 @@ export default function global(_state = defaultState, { type, payload }) {
 			state.round++;
 			if (payload.maxTime) state.maxTime = payload.maxTime;
 			state.timeLeft = state.maxTime;
-			state.letters = payload.letters;
+			state.letters = payload.letters.toUpperCase();
 			break;
 
 		case TICK:

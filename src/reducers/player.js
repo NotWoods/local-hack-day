@@ -1,4 +1,4 @@
-import { NEW_ROUND, SYNC, GAME_OVER, BLEW_UP } from '../messages';
+import { NEW_ROUND, SYNC, GAME_OVER, BLEW_UP, FOUND_WORD } from '../messages';
 
 const defaultState = Object.freeze({
 	me: '', // Stores player ID
@@ -17,7 +17,7 @@ export default function player(_state = defaultState, { type, payload }) {
 	switch (type) {
 		case NEW_ROUND:
 			state = newState(state);
-			state.wordsUsed.clear();
+			state.wordsUsed = new Set();
 			break;
 
 		case SYNC:
@@ -30,6 +30,12 @@ export default function player(_state = defaultState, { type, payload }) {
 				state = newState(state);
 				state.score++;
 			}
+			break;
+
+		case FOUND_WORD:
+			state = newState(state);
+			state.wordsUsed = new Set(state.wordsUsed);
+			state.wordsUsed.add(payload.word);
 			break;
 	}
 
