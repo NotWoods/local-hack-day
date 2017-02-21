@@ -30,7 +30,8 @@ export default function global(_state = defaultState, { type, payload }) {
 
 		case TICK:
 			state = newState(state);
-			state.timeLeft = Math.min(0, state.maxTime - payload);
+			if (payload) state.timeLeft = Math.max(0, state.maxTime - payload);
+			else state.timeLeft = Math.max(0, state.timeLeft - 1);
 			break;
 
 		case SYNC:
