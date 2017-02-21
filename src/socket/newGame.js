@@ -7,7 +7,7 @@ import {
 import {
 	gameStarted, isMyTurn, nextPlayer, maxTime, finishedGame, currentLead
 } from '../selectors.js';
-import existsInDictionary from '../dictionary.js';
+import existsInDictionary from '../words/dictionary.js';
 import startGame from './startGame.js';
 import endGame from './endGame.js';
 

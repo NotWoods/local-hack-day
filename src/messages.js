@@ -1,4 +1,4 @@
-import generateString from './generateString.js';
+import generateString from './words/generateString.js';
 
 export const NEW_ROUND = 'bomb.new';
 export const TICK = 'bomb.tick';
@@ -14,13 +14,19 @@ export const BLEW_UP = 'bomb.done';
 
 /**
  * Begin a new round and reset timers
+ * @param {string} [letters] letters to use for the round. Generated if unset.
+ * @param {number} [maxTime] modifies the current maxTime to a new value if set
  */
 export function newRound(letters = generateString(), maxTime = null) {
-	return { type: NEW_ROUND, payload: { letters, maxTime } };
+	return {
+		type: NEW_ROUND,
+		payload: { letters: letters.toUpperCase(), maxTime },
+	};
 }
 
 /**
  * Ticks during a round
+ * @param {number} [timeElapsed] if not set, the time elapsed increases by 1
  */
 export function tick(timeElapsed) {
 	return { type: TICK, payload: timeElapsed };
@@ -54,6 +60,7 @@ export function countdown(newTime) {
 
 /**
  * Indicates the round finished.
+ * @param {string} id of the player
  */
 export function playerBlewUp(id) {
 	return { type: BLEW_UP, payload: id };
@@ -61,6 +68,7 @@ export function playerBlewUp(id) {
 
 /**
  * Fires when the game ends
+ * @param {string} winner ID of the winning player
  */
 export function gameDone(winner) {
 	return { type: GAME_OVER, payload: { winner } };
@@ -68,6 +76,9 @@ export function gameDone(winner) {
 
 /**
  * Fired by the server when the client finds a valid word
+ * @param {string} word that was found
+ * @param {string} id of the player who found the word
+ * @param {string} next player's ID
  */
 export function foundWord(word, id, next) {
 	return { type: FOUND_WORD, payload: { word, id, next } };

@@ -1,6 +1,6 @@
 import test from 'blue-tape';
 import { combineReducers } from 'redux';
-import global from '../../../src/reducers/global.js';
+import { global } from '../../../src/reducers/index.js';
 import { tick } from '../../../src/messages.js';
 import { percentTimeLeft, maxTime } from '../../../src/selectors.js';
 

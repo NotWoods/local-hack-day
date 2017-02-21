@@ -23,7 +23,7 @@ function newRound(letters) {
 }
 
 
-export default function spectator(_state = defaultState, { type, payload }, global) {
+export default function spectator(_state = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {
 		case PLAYER_ENTERED:

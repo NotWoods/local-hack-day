@@ -1,0 +1,18 @@
+{
+	"version": "0.1.0",
+	"command": "yarn",
+	"isShellCommand": true,
+	"args": ["run"],
+	"tasks": [
+		{
+			"taskName": "test",
+			"isTestCommand": true
+		},
+		{
+			"taskName": "build-client"
+		},
+		{
+			"taskName": "build-server"
+		}
+	]
+}

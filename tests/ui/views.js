@@ -1,7 +1,6 @@
 import test from 'blue-tape';
 import { createStore, combineReducers } from 'redux';
-import globalReducer from '../../src/reducers/global.js';
-import player from '../../src/reducers/player.js';
+import { global as globalReducer, player } from '../../src/reducers/index.js';
 import { newRound } from '../../src/messages.js';
 import { isMyTurn, percentTimeLeft } from '../../src/selectors.js';
 

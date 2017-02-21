@@ -1,7 +1,6 @@
 import test from 'blue-tape';
 import { combineReducers } from 'redux';
-import global from '../../../src/reducers/global.js';
-import player from '../../../src/reducers/player.js';
+import { global, player } from '../../../src/reducers/index.js';
 import { newRound } from '../../../src/messages.js';
 import {
 	containsLetters, unusedWord,
