@@ -5,10 +5,13 @@ import { PASS_BOMB } from '../messages.js';
 const UI = { form: null, wordInput: null, bomb: null };
 
 /**
+ * Creates a function to submit test inside the input to the server, and attaches
+ * it to form onsubmit.
  * Document must be parsed.
- * @param {socket.Client} socket
+ * @param {Socket.Client} socket
  * @param {redux.Store} store
- * @returns {Function} submitText function
+ * @returns {Function} submitText function. Has removeListeners property to clear
+ * form listener.
  */
 export default function createSubmitText(socket, store) {
 	getElements(UI);
@@ -19,7 +22,7 @@ export default function createSubmitText(socket, store) {
 	 * Submits whatever value is currently inside the wordInput box to the server
 	 * @param {FormEvent} e
 	 */
-	return function submitText(e) {
+	function submitText(e) {
 		e.preventDefault();
 
 		const word = UI.wordInput.value;
@@ -34,4 +37,11 @@ export default function createSubmitText(socket, store) {
 			});
 		}
 	}
+
+	UI.form.addEventListener('submit', submitText);
+	submitText.removeListeners = function() {
+		UI.form.removeEventListener('submit', this);
+	}
+
+	return submitText;
 }

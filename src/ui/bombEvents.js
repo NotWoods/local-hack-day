@@ -33,7 +33,16 @@ function handleTouch(e) {
 }
 
 /**
- * Sets up bomb event listeners for touch and animation end
+ * Resets animations when they complete
+ */
+function clearAnimationState() {
+	UI.bomb.style.animationName = '';
+	UI.bomb.style.animationPlayState = 'paused';
+}
+
+/**
+ * Sets up bomb event listeners for touch and animation end.
+ * Document must be parsed.
  * @param {redux.Store} store
  */
 export default function initializeBombEvents(store) {
@@ -45,8 +54,10 @@ export default function initializeBombEvents(store) {
 	mc.add(new Tap());
 
 	mc.on('swipe', handleTouch).on('tap', handleTouch);
-	UI.bomb.addEventListener('animationend', () => {
-		UI.bomb.style.animationName = '';
-		UI.bomb.style.animationPlayState = 'paused';
-	});
+	UI.bomb.addEventListener('animationend', clearAnimationState);
+
+	return function removeBombEventListeners() {
+		mc.destory();
+		UI.bomb.removeEventListener('animationend', clearAnimationState);
+	}
 }
