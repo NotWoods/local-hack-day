@@ -1,23 +1,16 @@
-import { createStore, combineReducers } from 'redux';
 import io from 'socket.io-client';
-import { global, player } from './reducers/index.js';
-import { connectToStore, getNamespace, getServerURL } from './socket/index.js';
+import { parsed } from 'document-promises';
+import { getNamespace, getServerURL } from './socket/index.js';
+import createClientStore from './store/client.js';
 import createUIListeners from './ui/index.js';
-import {
-	NEW_ROUND, TICK, SYNC, COUNTDOWN,
-	GAME_OVER, FOUND_WORD, BLEW_UP,
-} from './messages.js';
 
-const store = createStore(
-	combineReducers({ global, player })
-);
+async function main() {
+	const socket = io(`${getServerURL()}${getNamespace()}`);
+	const store = createClientStore(socket);
 
-const socket = io(`${getServerURL()}${getNamespace()}`);
+	await parsed;
+	createUIListeners(store);
+}
 
-connectToStore(socket, store, [
-	NEW_ROUND, TICK, SYNC, COUNTDOWN,
-	GAME_OVER, FOUND_WORD, BLEW_UP,
-]);
-
-createUIListeners(socket, store);
+main();
 

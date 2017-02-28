@@ -13,10 +13,8 @@ const UI = { form: null, wordInput: null, bomb: null };
  * @returns {Function} submitText function. Has removeListeners property to clear
  * form listener.
  */
-export default function createSubmitText(socket, store) {
+export default function createSubmitText({ dispatch, getState }) {
 	getElements(UI);
-	const getState = store.getState.bind(store);
-	const emit = socket.emit.bind(socket);
 
 	/**
 	 * Submits whatever value is currently inside the wordInput box to the server
@@ -32,7 +30,7 @@ export default function createSubmitText(socket, store) {
 		UI.bomb.style.animationPlayState = 'running';
 
 		if (valid) {
-			emit(PASS_BOMB, word, (err) => {
+			dispatch(PASS_BOMB, word, (err) => {
 				if (err) UI.bomb.style.animationame = 'shake';
 			});
 		}

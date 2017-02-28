@@ -43,11 +43,9 @@ function clearAnimationState() {
 /**
  * Sets up bomb event listeners for touch and animation end.
  * Document must be parsed.
- * @param {redux.Store} store
  */
-export default function initializeBombEvents(store) {
+export default function initializeBombEvents() {
 	getElements(UI);
-	const getState = store.getState.bind(store);
 
 	const mc = new Manager(UI.bomb);
 	mc.add(new Swipe({ direction: DIRECTION_ALL }));

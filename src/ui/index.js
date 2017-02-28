@@ -4,14 +4,13 @@ import createSubmitText from './submitText.js';
 import createViewUpdater from './viewUpdater.js';
 
 /**
- * @param {Socket.Client} socket
  * @param {redux.Store} store
  * @returns {Promise<Function>}
  */
-export default function createUIListeners(socket, store) {
+export default function createUIListeners(store) {
 	return parsed.then(() => {
-		const removeBombEventListeners = initializeBombEvents(store);
-		const submitText = createSubmitText(socket, store);
+		const removeBombEventListeners = initializeBombEvents();
+		const submitText = createSubmitText(store);
 		const removeObservers = createViewUpdater(store);
 
 		return function removeUIListeners() {
