@@ -15,6 +15,8 @@ import endGame from './endGame.js';
  * Listens to and handles the PASS_BOMB and PLAYER_LEFT events from a client.
  * An acknowledgement is sent to show that the passed word was received,
  * which contains an error if the word is invalid or it isn't the player's turn.
+ * @param {SocketIO.Client}
+ * @param {Redux.Store|Redux.MiddlewareAPI} store
  */
 function handleClientEvents(socket, store) {
 	socket.on(PASS_BOMB, (word, callback) => {
@@ -49,7 +51,7 @@ function wait(time) {
  * Runs each round of the game, and resolves once done.
  * This function is recursive and calls itself to start the next round
  * if the maximum amount hasn't been reached yet.
- * @param {redux.Store} store
+ * @param {Redux.Store|Redux.MiddlewareAPI} store
  * @param {number} maxRounds
  * @returns {Promise<void>} once all rounds are done
  */
@@ -75,7 +77,7 @@ function runRounds(store, maxRounds = 3) {
 
 /**
  * Counts down and resolves when the timer reaches 0
- * @param {redux.Store} store
+ * @param {Redux.Store|Redux.MiddlewareAPI} store
  * @returns {Promise<void>} resolves after timer has finished
  */
 function runCountdown(store) {

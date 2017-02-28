@@ -10,7 +10,7 @@ const clientReducer = combineReducers({ global, player });
 
 /**
  * @param {SocketIOClient.Socket} io
- * @returns {redux.Store}
+ * @returns {Store}
  */
 export default function createClientStore(io) {
 	return createStore(

@@ -12,6 +12,11 @@ function newState(oldState) {
 	return newS;
 }
 
+/**
+ * Reducer that tracks client-specific data. This data will mostly be different
+ * for each player, and isn't used by spectators. The state stores the player's
+ * ID and score, and also tracks words used.
+ */
 export default function player(_state = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {

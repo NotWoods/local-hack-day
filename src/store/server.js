@@ -1,20 +1,24 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { global, spectator } from '../reducers/index.js';
 import newSocketMiddleware from '../socket/socketMiddleware.js';
-import {} from '../messages.js';
+import {
+	BLEW_UP, NEW_ROUND, FOUND_WORD,
+	TICK, COUNTDOWN, GAME_OVER,
+} from '../messages.js';
 
 const serverReducer = combineReducers({ global, spectator });
 
 /**
  * @param {SocketIO.Namespace} io
- * @returns {redux.Store}
+ * @returns {Store}
  */
 export default function createServerStore(io) {
 	return createStore(
 		serverReducer,
 		applyMiddleware(
 			newSocketMiddleware(io, [
-				/* TODO */
+				BLEW_UP, NEW_ROUND, FOUND_WORD,
+				TICK, COUNTDOWN, GAME_OVER,
 			]),
 		),
 	);

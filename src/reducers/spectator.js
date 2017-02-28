@@ -22,7 +22,12 @@ function newRound(letters) {
 	};
 }
 
-
+/**
+ * A reducer that tracks state used by the server and spectators. One array
+ * holds objects describing the players. The order of the array determines the
+ * order the bomb gets passed around. The other array holds data on every round
+ * in this game, for spectators to see and for scores to be calculated from.
+ */
 export default function spectator(_state = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {

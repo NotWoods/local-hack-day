@@ -17,6 +17,11 @@ function newState(oldState) {
 	return Object.assign({}, oldState);
 }
 
+/**
+ * Reducer to track global state shared by the server and clients. Keeps track of
+ * the current round number and letters, who is holding the bomb, as well as
+ * remaining time and the winner of the game (once the game ends).
+ */
 export default function global(_state = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {
