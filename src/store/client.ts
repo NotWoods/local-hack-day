@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { global, player } from '../reducers/index.js';
-import { newSocketMiddleware } from '../socket/index.js';
+import { global, player } from '../reducers';
+import { newSocketMiddleware } from '../socket';
 import {
 	NEW_ROUND, TICK, SYNC, COUNTDOWN,
 	GAME_OVER, FOUND_WORD, BLEW_UP,
-} from '../messages.js';
+} from '../messages';
 
 const clientReducer = combineReducers({ global, player });
 
@@ -12,7 +12,7 @@ const clientReducer = combineReducers({ global, player });
  * @param {SocketIOClient.Socket} io
  * @returns {Store}
  */
-export default function createClientStore(io) {
+export default function createClientStore(io: SocketIO.Socket) {
 	return createStore(
 		clientReducer,
 		applyMiddleware(

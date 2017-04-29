@@ -11,18 +11,22 @@ const scrabbleDistrubutions = {
 const vowels = new Set(['A', 'E', 'I', 'O', 'U']);
 
 function buildDeck(distribution = scrabbleDistrubutions) {
-	const deck = new Map();
+	const deck = new Map<number, string[]>();
 
-	for (const letter in distribution) {
-		const score = distribution[letter];
-		if (!deck.has(score)) deck.set(score, []);
-		deck.get(score).push(letter);
+	for (const [letter, score] of Object.entries(distribution)) {
+		let array = deck.get(score);
+		if (!array) {
+			array = [];
+			deck.set(score, array);
+		}
+
+		array.push(letter);
 	}
 
 	return deck;
 }
 
-function rand(min, max) {
+function rand(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -31,7 +35,7 @@ const deck = buildDeck();
 /**
  * Generates some string to use.
  */
-export default function generateString() {
+export default function generateString(): string {
 	const points = [...deck.keys()];
 
 	const ceil = rand(1, points.reduce((big, n) => (n > big ? n : big), 0));
@@ -41,8 +45,9 @@ export default function generateString() {
 		let row = points[rand(0, points.length - 1)];
 		if (row > ceil) row = 1;
 
-		row = deck.get(row);
-		return row[rand(0, row.length - 1)];
+		const letters = deck.get(row);
+		if (!letters) throw new Error();
+		return letters[rand(0, letters.length - 1)];
 	}
 
 	let str = '';

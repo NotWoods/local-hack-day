@@ -2,14 +2,16 @@ import {
 	PASS_BOMB, PLAYER_ENTERED, PLAYER_LEFT,
 	playerEntered, playerLeft,
 	countdown, newRound, tick, playerBlewUp, gameDone, foundWord
-} from '../messages.js';
+} from '../messages';
 import {
-	gameStarted, isMyTurn, nextPlayer, maxTime, finishedGame, currentLead
-} from '../selectors.js';
-import existsInDictionary from '../words/dictionary.js';
-import createServerStore from '../store/server.js';
-import startGame from './startGame.js';
-import endGame from './endGame.js';
+	gameStarted, isMyTurn, nextPlayer, maxTime, finishedGame, currentLead, currentPlayer
+} from '../selectors';
+import existsInDictionary from '../words/dictionary';
+import createServerStore from '../store/server';
+
+import { Store } from 'redux';
+import { Client } from 'socket.io-client';
+import { State, ServerState } from '../reducers'
 
 /**
  * Listens to and handles the PASS_BOMB and PLAYER_LEFT events from a client.
@@ -18,7 +20,7 @@ import endGame from './endGame.js';
  * @param {SocketIO.Client}
  * @param {Redux.Store|Redux.MiddlewareAPI} store
  */
-function handleClientEvents(socket, store) {
+function handleClientEvents(socket: Client, store: Store<ServerState>) {
 	socket.on(PASS_BOMB, (word, callback) => {
 		const id = socket.id;
 		const state = store.getState();
@@ -43,7 +45,7 @@ function handleClientEvents(socket, store) {
 /**
  * @returns {Promise<void>} resolves after `time` milliseconds
  */
-function wait(time) {
+function wait(time: number) {
 	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
@@ -55,7 +57,7 @@ function wait(time) {
  * @param {number} maxRounds
  * @returns {Promise<void>} once all rounds are done
  */
-function runRounds(store, maxRounds = 3) {
+function runRounds(store: Store<State>, maxRounds = 3): Promise<void> {
 	const roundStart = Date.now();
 	store.dispatch(newRound());
 
@@ -69,9 +71,9 @@ function runRounds(store, maxRounds = 3) {
 		const holder = currentPlayer(store.getState());
 		store.dispatch(playerBlewUp(holder));
 
-		if (!finishedGame(store.getState(), maxRounds)) {
-			return runRounds(store, maxRounds);
-		}
+		if (finishedGame(store.getState(), maxRounds)) return;
+
+		return runRounds(store, maxRounds);
 	});
 }
 
@@ -92,12 +94,12 @@ function runCountdown(store) {
 /**
  * Ends the game
  */
-function endGame(store) {
-	const winner = currentLead(store.getState());
-	store.dispatch(gameDone(winner));
+function endGame(store: Store<ServerState>) {
+	const winners = currentLead(store.getState());
+	store.dispatch(gameDone(winners));
 }
 
-export const games = new Map(); // Map<id, redux.Store>
+export const games = new Map<string, Store<ServerState>>(); // Map<id, redux.Store>
 
 /**
  * Games are represented as seperate namespaces rather than socket rooms
@@ -106,11 +108,12 @@ export const games = new Map(); // Map<id, redux.Store>
  * @param {string} path to use for the namespace.
  * @returns {SocketIO.Namespace} namespace representing this game
  */
-export default function newGame(io, path) {
-	if (games.has(path)) return games.get(path);
+export default function newGame(io: SocketIO.Server, path: string): Store<ServerState> {
+	const existing = games.get(path);
+	if (existing) return existing;
 
 	const nsp = io.of(path);
-	const store = createServerStore(io);
+	const store = createServerStore(nsp);
 
 	games.set(path, store);
 

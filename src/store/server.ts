@@ -12,7 +12,7 @@ const serverReducer = combineReducers({ global, spectator });
  * @param {SocketIO.Namespace} io
  * @returns {Store}
  */
-export default function createServerStore(io) {
+export default function createServerStore(io: SocketIO.Socket) {
 	return createStore(
 		serverReducer,
 		applyMiddleware(

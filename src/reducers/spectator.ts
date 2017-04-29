@@ -1,21 +1,37 @@
-import { PLAYER_ENTERED, BLEW_UP, NEW_ROUND, FOUND_WORD } from '../messages.js';
+import { PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD } from '../messages.js';
+
+interface PlayerSubState {
+	id: ID,
+	name: string,
+	score: number,
+}
+interface RoundSubState {
+	letters: string,
+	wordsUsed: Map<string, ID>
+}
+
+type ID = string;
+export interface SpectatorState {
+	players: PlayerSubState[],
+	pastRounds: RoundSubState[]
+}
 
 const defaultState = Object.freeze({
 	players: [], // players in the game
 	pastRounds: [], // data from  previous rounds in the game
 });
 
-function newState(oldState) {
+function newState(oldState: SpectatorState): SpectatorState {
 	return Object.assign({}, oldState);
 }
-function newPlayer(id, name = '') {
+function newPlayer(id, name = ''): PlayerSubState {
 	return {
 		id, // player unique ID
 		name, // name of the player if entered by user
 		score: 0, // current score for the player
 	};
 }
-function newRound(letters) {
+function newRound(letters: string): RoundSubState {
 	return {
 		letters,
 		wordsUsed: new Map(), // Map<word, player>
@@ -28,7 +44,7 @@ function newRound(letters) {
  * order the bomb gets passed around. The other array holds data on every round
  * in this game, for spectators to see and for scores to be calculated from.
  */
-export default function spectator(_state = defaultState, { type, payload }) {
+export default function spectator(_state: SpectatorState = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {
 		case PLAYER_ENTERED:
@@ -41,14 +57,14 @@ export default function spectator(_state = defaultState, { type, payload }) {
 
 		case PLAYER_LEFT: {
 			state = newState(state);
-			const index = state.players.find(player => player.id === payload);
+			const index = state.players.findIndex(player => player.id === payload);
 			state.players.slice().splice(index, 1);
 			break;
 		}
 
 		case BLEW_UP: {
 			state = newState(state);
-			const index = state.players.find(player => player.id === payload);
+			const index = state.players.findIndex(player => player.id === payload);
 
 			const oldPlayer = state.players[index];
 			const player = newPlayer(oldPlayer.id, oldPlayer.name);

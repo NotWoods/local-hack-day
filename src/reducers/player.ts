@@ -1,4 +1,11 @@
-import { NEW_ROUND, SYNC, GAME_OVER, BLEW_UP, FOUND_WORD } from '../messages';
+import { NEW_ROUND, SYNC, BLEW_UP, FOUND_WORD } from '../messages';
+
+type ID = string;
+export interface PlayerState {
+	me: ID,
+	score: number,
+	wordsUsed: Set<string>,
+}
 
 const defaultState = Object.freeze({
 	me: '', // Stores player ID
@@ -6,7 +13,7 @@ const defaultState = Object.freeze({
 	wordsUsed: new Set(), // Tracks words used this round
 });
 
-function newState(oldState) {
+function newState(oldState: PlayerState): PlayerState {
 	const newS = Object.assign({}, oldState);
 	newS.wordsUsed = new Set(oldState.wordsUsed);
 	return newS;
@@ -17,7 +24,7 @@ function newState(oldState) {
  * for each player, and isn't used by spectators. The state stores the player's
  * ID and score, and also tracks words used.
  */
-export default function player(_state = defaultState, { type, payload }) {
+export default function player(_state: PlayerState = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {
 		case NEW_ROUND:

@@ -1,3 +1,5 @@
+import * as redux from 'redux';
+
 const specialTypes = new Set([
 	'connection', 'connect',
 	'disconnect',
@@ -11,7 +13,10 @@ const specialTypes = new Set([
  * @param {socket.Socket} io
  * @param {string[]} [messageTypes] - list of actions to listen to
  */
-export default function newSocketMiddleware(io, messageTypes = []) {
+export default function newSocketMiddleware(
+	io: SocketIO.Socket,
+	messageTypes: string[] = [],
+): redux.Middleware {
 	return function socketMiddleware(store) {
 		// When one of the listed message types are received, dispatch it as a
 		// action for the store to process.

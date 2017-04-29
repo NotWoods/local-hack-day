@@ -3,6 +3,17 @@ import { NEW_ROUND, TICK, SYNC, COUNTDOWN, FOUND_WORD, GAME_OVER } from '../mess
 const maxTime = parseInt(process.env.MAX_TIME, 10) || 60;
 const countdown = parseInt(process.env.COUNTDOWN_START, 10) || 60;
 
+type ID = string;
+export interface GlobalState {
+	round: number,
+	maxTime: number,
+	timeLeft: number,
+	holdingBomb: ID,
+	letters: string,
+	winner: ID,
+	countdown: number,
+}
+
 const defaultState = Object.freeze({
 	round: 0, // Current round number
 	maxTime, // Maximum time in a round
@@ -13,7 +24,7 @@ const defaultState = Object.freeze({
 	countdown, // Current countdown number, before the game has started
 });
 
-function newState(oldState) {
+function newState<T>(oldState: T): T {
 	return Object.assign({}, oldState);
 }
 
@@ -22,7 +33,7 @@ function newState(oldState) {
  * the current round number and letters, who is holding the bomb, as well as
  * remaining time and the winner of the game (once the game ends).
  */
-export default function global(_state = defaultState, { type, payload }) {
+export default function global(_state: GlobalState = defaultState, { type, payload }) {
 	let state = _state;
 	switch (type) {
 		case NEW_ROUND:
@@ -58,7 +69,7 @@ export default function global(_state = defaultState, { type, payload }) {
 
 		case GAME_OVER:
 			state = newState(state);
-			state.winner = payload.winner;
+			state.winner = payload.winners[0];
 			break;
 	}
 

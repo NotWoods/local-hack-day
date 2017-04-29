@@ -1,11 +1,11 @@
 import {
 	Manager, Swipe, Tap,
-	DIRECTION_ALL, DIRECTION_UP, DIRECTION_DOWN, DIRECTION_RIGHT, DIRECTION_LEFT,
+	DIRECTION_ALL, DIRECTION_NONE,
+	DIRECTION_UP, DIRECTION_DOWN, DIRECTION_RIGHT, DIRECTION_LEFT,
 } from 'hammer';
-import { getElements } from '../utils.js';
-import { validWord, isMyTurn } from '../selectors.js';
+import { getElements, UIMap } from '../utils.js';
 
-const UI = { bomb: null, form: null };
+const UI: UIMap = { bomb: null, form: null };
 
 /**
  * @param {Hammer.Direction} [direction]
@@ -28,16 +28,21 @@ function getAnimation(direction) {
  * Handles touch events for the bomb icon
  */
 function handleTouch(e) {
-	UI.bomb.style.animationName = getAnimation(e.direction);
-	UI.form.submit();
+	const bomb = <HTMLElement> UI.bomb;
+	const form = <HTMLFormElement> UI.form;
+
+	bomb.style.animationName = getAnimation(e.direction);
+	form.submit();
 }
 
 /**
  * Resets animations when they complete
  */
 function clearAnimationState() {
-	UI.bomb.style.animationName = '';
-	UI.bomb.style.animationPlayState = 'paused';
+	const bomb = <HTMLElement> UI.bomb;
+
+	bomb.style.animationName = '';
+	bomb.style.animationPlayState = 'paused';
 }
 
 /**
@@ -46,16 +51,17 @@ function clearAnimationState() {
  */
 export default function initializeBombEvents() {
 	getElements(UI);
+	const bomb = <HTMLElement> UI.bomb;
 
-	const mc = new Manager(UI.bomb);
+	const mc = new Manager(bomb);
 	mc.add(new Swipe({ direction: DIRECTION_ALL }));
 	mc.add(new Tap());
 
 	mc.on('swipe', handleTouch).on('tap', handleTouch);
-	UI.bomb.addEventListener('animationend', clearAnimationState);
+	bomb.addEventListener('animationend', clearAnimationState);
 
 	return function removeBombEventListeners() {
 		mc.destory();
-		UI.bomb.removeEventListener('animationend', clearAnimationState);
+		bomb.removeEventListener('animationend', clearAnimationState);
 	}
 }

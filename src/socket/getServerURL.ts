@@ -1,4 +1,4 @@
-const defaultServer = process.env.SERVER;
+const defaultServer: string | undefined = process.env.SERVER;
 
 /**
  * Retrieves the server URL from settings. Defaults to process.env.SERVER

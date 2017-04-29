@@ -1,17 +1,26 @@
+import { State, ClientState, ServerState } from './reducers';
+type ID = string;
+
 /**
  * Checks if this player is the one holding the bomb
  * @param {string} [me] the player to check for - defaults to current player
  * @returns {boolean}
  */
-export function isMyTurn({ global, player }, me) {
-	return global.holding_bomb === (me || player.me);
+export function isMyTurn(state: State, me: ID): boolean
+export function isMyTurn(state: ClientState, me?: ID): boolean
+export function isMyTurn(state: State | ClientState, me?: ID): boolean {
+	if ('player' in state) {
+		const { player } = <ClientState> state;
+		me = player.me;
+	}
+	return state.global.holdingBomb === me;
 }
 
 /**
  * Gets time left as decimal
  * @returns {number}
  */
-export function percentTimeLeft({ global }) {
+export function percentTimeLeft({ global }: State): number {
 	return global.timeLeft / global.maxTime;
 }
 
@@ -20,7 +29,7 @@ export function percentTimeLeft({ global }) {
  * @param {string} word
  * @returns {boolean}
  */
-export function containsLetters({ global }, word) {
+export function containsLetters({ global }: State, word: string): boolean {
 	return word.toUpperCase().includes(global.letters);
 }
 
@@ -29,10 +38,18 @@ export function containsLetters({ global }, word) {
  * @param {string} word
  * @returns {boolean}
  */
-export function unusedWord({ player, spectator }, word) {
+export function unusedWord(
+	state: ClientState | ServerState,
+	word: string,
+): boolean {
 	let wordsUsed;
-	if (player) wordsUsed = player.wordsUsed;
-	else wordsUsed = spectator.pastRounds[spectator.pastRounds.length - 1].wordsUsed;
+	if ('player' in state) {
+		const { player } = <ClientState> state;
+		wordsUsed = player.wordsUsed;
+	} else {
+		const { spectator } = <ServerState> state;
+		wordsUsed = spectator.pastRounds[spectator.pastRounds.length - 1].wordsUsed;
+	}
 
 	return !wordsUsed.has(word.toUpperCase());
 }
@@ -41,7 +58,7 @@ export function unusedWord({ player, spectator }, word) {
  * Gets the ID of the player currently holding the bomb
  * @returns {string}
  */
-export function currentPlayer({ global }) {
+export function currentPlayer({ global }: State): ID {
 	return global.holdingBomb;
 }
 
@@ -49,9 +66,9 @@ export function currentPlayer({ global }) {
  * Finds the ID of the player who will receive the bomb next
  * @returns {string}
  */
-export function nextPlayer({ global, spectator }) {
+export function nextPlayer({ global, spectator }: ServerState): ID {
 	const { holdingBomb } = global;
-	const { players } = state;
+	const { players } = spectator;
 	const currentIndex = players.findIndex(player => player.id === holdingBomb);
 
 	let nextIndex = currentIndex + 1;
@@ -67,9 +84,9 @@ export function nextPlayer({ global, spectator }) {
  * @param {string} word
  * @returns {Promise<boolean>} true if found in dictionary
  */
-export function spellCheck(word) {
+export function spellCheck(word: string): Promise<boolean> {
 	return fetch(`${process.env.SERVER}/checkword/${word}`, { method: 'HEAD' })
-		.catch(err => ({ ok: false }))
+		.catch(() => ({ ok: false }))
 		.then(response => response.ok);
 }
 
@@ -78,7 +95,7 @@ export function spellCheck(word) {
  * @param {string} word
  * @returns {boolean}
  */
-export function validWord(state, word) {
+export function validWord(state: ClientState | ServerState, word: string): boolean {
 	return containsLetters(state, word) && unusedWord(state, word);
 }
 
@@ -86,7 +103,7 @@ export function validWord(state, word) {
  * True if the game has ended
  * @returns {boolean}
  */
-export function gameOver({ global }) {
+export function gameOver({ global }: State): boolean {
 	return Boolean(global.winner);
 }
 
@@ -94,7 +111,7 @@ export function gameOver({ global }) {
  * true if the game has started
  * @returns {boolean}
  */
-export function gameStarted({ global }) {
+export function gameStarted({ global }: State): boolean {
 	return global.countdown === 0;
 }
 
@@ -102,7 +119,7 @@ export function gameStarted({ global }) {
  * The maximum time in a round
  * @returns {number}
  */
-export function maxTime({ global }) {
+export function maxTime({ global }: State): number {
 	return global.maxTime;
 }
 
@@ -111,7 +128,7 @@ export function maxTime({ global }) {
  * @param {number} maxRounds
  * @returns {boolean}
  */
-export function finishedGame({ global }, maxRounds) {
+export function finishedGame({ global }: State, maxRounds: number): boolean {
 	return global.round >= maxRounds;
 }
 
@@ -119,10 +136,10 @@ export function finishedGame({ global }, maxRounds) {
  * Finds the players with the lowest scores
  * @returns {string[]}
  */
-export function currentLead({ spectator }) {
-	const leads = new Set();
+export function currentLead({ spectator }: ServerState): ID[] {
+	const leads = new Set<ID>();
 	let lowestScore = Number.MAX_VALUE;
-	spectator.forEach(({ id, score }) => {
+	spectator.players.forEach(({ id, score }) => {
 		if (score <= lowestScore) {
 			if (score < lowestScore) {
 				leads.clear();
