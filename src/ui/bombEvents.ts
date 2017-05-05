@@ -2,7 +2,7 @@ import {
 	Manager, Swipe, Tap,
 	DIRECTION_ALL, DIRECTION_NONE,
 	DIRECTION_UP, DIRECTION_DOWN, DIRECTION_RIGHT, DIRECTION_LEFT,
-} from 'hammer';
+} from 'hammerjs';
 import { getElements, UIMap } from '../utils.js';
 
 const UI: UIMap = { bomb: null, form: null };
@@ -11,7 +11,7 @@ const UI: UIMap = { bomb: null, form: null };
  * @param {Hammer.Direction} [direction]
  * @returns {string} the class name to represent the swipe direction provided.
  */
-function getAnimation(direction) {
+function getAnimation(direction: number) {
 	switch (direction) {
 		case DIRECTION_LEFT: return 'slideLeft';
 		case DIRECTION_RIGHT: return 'slideRight';
@@ -27,7 +27,7 @@ function getAnimation(direction) {
 /**
  * Handles touch events for the bomb icon
  */
-function handleTouch(e) {
+function handleTouch(e: HammerInput) {
 	const bomb = <HTMLElement> UI.bomb;
 	const form = <HTMLFormElement> UI.form;
 
@@ -57,11 +57,12 @@ export default function initializeBombEvents() {
 	mc.add(new Swipe({ direction: DIRECTION_ALL }));
 	mc.add(new Tap());
 
-	mc.on('swipe', handleTouch).on('tap', handleTouch);
+	mc.on('swipe', handleTouch);
+	mc.on('tap', handleTouch);
 	bomb.addEventListener('animationend', clearAnimationState);
 
 	return function removeBombEventListeners() {
-		mc.destory();
+		mc.destroy();
 		bomb.removeEventListener('animationend', clearAnimationState);
 	}
 }

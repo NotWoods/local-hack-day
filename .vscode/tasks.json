@@ -13,6 +13,9 @@
 		},
 		{
 			"taskName": "build-server"
+		},
+		{
+			"taskName": "typecheck"
 		}
 	]
 }

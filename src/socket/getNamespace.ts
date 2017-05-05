@@ -4,7 +4,7 @@
  * @param {string} [root] root pathname, defaults to '/'
  * @returns {string}
  */
-function getSubfolder(path: string, root = '/') {
+function getSubfolder(path: string, root = '/'): string {
 	const sitepath = root.split('/');
 	const parts = path.split('/');
 
@@ -25,7 +25,10 @@ function getSubfolder(path: string, root = '/') {
  * @param {string} [root]
  * @returns {string}
  */
-export default function getNamespace(pathname = window.location.pathname, root?: string) {
+export default function getNamespace(
+	pathname = window.location.pathname,
+	root?: string,
+): string {
 	const subfolder = getSubfolder(pathname, root);
 
 	const [namespace] = subfolder.split('/', 1);

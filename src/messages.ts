@@ -36,9 +36,15 @@ export function tick(timeElapsed?: number) {
  * Fired when a player joins this game
  * @param {Socket|string} socket representing client, or the client's id
  */
-export function playerEntered(socket: string | { id: string }) {
+export function playerEntered(socket: string | { id: string }, name?: string) {
 	const id = typeof socket === 'string' ? socket : socket.id;
-	return { type: PLAYER_ENTERED, payload: { id } };
+	return {
+		type: PLAYER_ENTERED,
+		payload: {
+			id,
+			name,
+		},
+	};
 }
 
 /**

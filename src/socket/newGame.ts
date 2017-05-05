@@ -10,18 +10,17 @@ import existsInDictionary from '../words/dictionary';
 import createServerStore from '../store/server';
 
 import { Store } from 'redux';
-import { Client } from 'socket.io-client';
 import { State, ServerState } from '../reducers'
 
 /**
  * Listens to and handles the PASS_BOMB and PLAYER_LEFT events from a client.
  * An acknowledgement is sent to show that the passed word was received,
  * which contains an error if the word is invalid or it isn't the player's turn.
- * @param {SocketIO.Client}
+ * @param {SocketIOClient.Socket} socket
  * @param {Redux.Store|Redux.MiddlewareAPI} store
  */
-function handleClientEvents(socket: Client, store: Store<ServerState>) {
-	socket.on(PASS_BOMB, (word, callback) => {
+function handleClientEvents(socket: SocketIO.Socket, store: Store<ServerState>) {
+	socket.on(PASS_BOMB, (word: string, callback: (err?: Error | null) => void) => {
 		const id = socket.id;
 		const state = store.getState();
 
@@ -82,7 +81,7 @@ function runRounds(store: Store<State>, maxRounds = 3): Promise<void> {
  * @param {Redux.Store|Redux.MiddlewareAPI} store
  * @returns {Promise<void>} resolves after timer has finished
  */
-function runCountdown(store) {
+function runCountdown(store: Store<State>) {
 	return new Promise((resolve) => {
 		const timer = setInterval(() => {
 			store.dispatch(countdown());

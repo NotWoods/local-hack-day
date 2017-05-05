@@ -1,12 +1,12 @@
 import { createReadStream } from 'fs';
-import byline from 'byline';
+import * as byline from 'byline';
 
 const dictionary = new Set<string>();
 let err: Error | null = null;
 
 export function initialize(path = 'sowpods.txt') {
-	const stream = byline(createReadStream(path, 'utf8'));
-	stream.on('data', word => dictionary.add(word));
+	const stream: byline.LineStream = byline(createReadStream(path, 'utf8'));
+	stream.on('data', (word: string) => dictionary.add(word));
 
 	return new Promise((resolve, reject) =>
 		stream.on('finish', resolve).on('error', reject)

@@ -2,9 +2,15 @@ import { Store } from 'redux';
 import { getElements, UIMap } from '../utils';
 import { validWord, isMyTurn } from '../selectors';
 import { PASS_BOMB } from '../messages';
+
 import { ClientState } from '../reducers/';
 
 const UI: UIMap = { form: null, wordInput: null, bomb: null };
+
+interface SubmitTextResult {
+	(e: any): void,
+	removeListeners(): void,
+}
 
 /**
  * Creates a function to submit test inside the input to the server, and attaches
@@ -16,7 +22,7 @@ const UI: UIMap = { form: null, wordInput: null, bomb: null };
 export default function createSubmitText(
 	io: SocketIOClient.Socket,
 	{ getState }: Store<ClientState>,
-) {
+): SubmitTextResult {
 	getElements(UI);
 	const form = <HTMLFormElement> UI.form;
 	const wordInput = <HTMLInputElement> UI.wordInput;
@@ -26,7 +32,7 @@ export default function createSubmitText(
 	 * Submits whatever value is currently inside the wordInput box to the server
 	 * @param {FormEvent} e
 	 */
-	function submitText(e) {
+	function submitText(e: Event) {
 		e.preventDefault();
 
 		const word = wordInput.value;
@@ -36,16 +42,18 @@ export default function createSubmitText(
 		bomb.style.animationPlayState = 'running';
 
 		if (valid) {
-			io.emit(PASS_BOMB, word, (err) => {
+			io.emit(PASS_BOMB, word, (err?: Error) => {
 				if (err) bomb.style.animationName = 'shake';
 			});
 		}
 	}
 
 	form.addEventListener('submit', submitText);
-	/*submitText.removeListeners = function() {
-		form.removeEventListener('submit', this);
-	}*/
 
-	return submitText;
+	const result: SubmitTextResult = <any> submitText;
+	result.removeListeners = function() {
+		form.removeEventListener('submit', this);
+	}
+
+	return result;
 }

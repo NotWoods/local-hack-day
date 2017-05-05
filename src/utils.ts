@@ -38,7 +38,7 @@ export function observeStore<S, T>(
 	selector: (state: S) => T,
 	onChange: (changed: T) => void,
 ) {
-	let currentState;
+	let currentState: T;
 
 	function handleChange() {
 		const nextState = selector(store.getState());

@@ -1,6 +1,6 @@
-import { GlobalState } from './global.js';
-import { PlayerState } from './player.js';
-import { SpectatorState } from './spectator.js';
+import { GlobalState } from './global';
+import { PlayerState } from './player';
+import { SpectatorState } from './spectator';
 
 export interface State {
 	global: GlobalState
@@ -16,8 +16,8 @@ export interface ServerState {
 	spectator: SpectatorState
 }
 
-export { default as global, GlobalState } from './global.js';
-export { default as player, PlayerState } from './player.js';
-export { default as spectator, SpectatorState } from './spectator.js';
+export { default as global, GlobalState } from './global';
+export { default as player, PlayerState } from './player';
+export { default as spectator, SpectatorState } from './spectator';
 
 

@@ -1,4 +1,7 @@
-import { NEW_ROUND, TICK, SYNC, COUNTDOWN, FOUND_WORD, GAME_OVER } from '../messages';
+import {
+	NEW_ROUND, TICK, SYNC, COUNTDOWN, FOUND_WORD, GAME_OVER,
+} from '../messages';
+import { StandardAction } from '../socket/'
 
 const maxTime = parseInt(process.env.MAX_TIME, 10) || 60;
 const countdown = parseInt(process.env.COUNTDOWN_START, 10) || 60;
@@ -33,44 +36,56 @@ function newState<T>(oldState: T): T {
  * the current round number and letters, who is holding the bomb, as well as
  * remaining time and the winner of the game (once the game ends).
  */
-export default function global(_state: GlobalState = defaultState, { type, payload }) {
+export default function global(_state: GlobalState = defaultState, action: StandardAction) {
 	let state = _state;
-	switch (type) {
-		case NEW_ROUND:
+	switch (action.type) {
+		case NEW_ROUND: {
+			const payload: { letters: string, maxTime: number | null } = action.payload;
 			state = newState(state);
 			state.round++;
 			if (payload.maxTime) state.maxTime = payload.maxTime;
 			state.timeLeft = state.maxTime;
 			state.letters = payload.letters.toUpperCase();
 			break;
+		}
 
-		case TICK:
+		case TICK: {
+			const payload: number | undefined = action.payload;
 			state = newState(state);
 			if (payload) state.timeLeft = Math.max(0, state.maxTime - payload);
 			else state.timeLeft = Math.max(0, state.timeLeft - 1);
 			break;
+		}
 
-		case SYNC:
+		case SYNC: {
+			const payload: { global: GlobalState } = action.payload;
 			state = Object.assign({}, state, payload.global);
 			break;
+		}
 
-		case COUNTDOWN:
+		case COUNTDOWN: {
+			const payload: number | undefined = action.payload;
 			state = newState(state);
 			if (payload) state.countdown = payload;
 			else state.countdown--;
 
 			if (state.countdown < 0) state.countdown = 0;
 			break;
+		}
 
-		case FOUND_WORD:
+		case FOUND_WORD: {
+			const payload: { word: string, id: ID, next: ID } = action.payload;
 			state = newState(state);
 			state.holdingBomb = payload.next;
 			break;
+		}
 
-		case GAME_OVER:
+		case GAME_OVER: {
+			const payload: { winners: string[] } = action.payload;
 			state = newState(state);
 			state.winner = payload.winners[0];
 			break;
+		}
 	}
 
 	return state;

@@ -1,4 +1,7 @@
-import { NEW_ROUND, SYNC, BLEW_UP, FOUND_WORD } from '../messages';
+import {
+	NEW_ROUND, SYNC, BLEW_UP, FOUND_WORD
+} from '../messages';
+import { StandardAction } from '../socket/'
 
 type ID = string;
 export interface PlayerState {
@@ -24,31 +27,37 @@ function newState(oldState: PlayerState): PlayerState {
  * for each player, and isn't used by spectators. The state stores the player's
  * ID and score, and also tracks words used.
  */
-export default function player(_state: PlayerState = defaultState, { type, payload }) {
+export default function player(_state: PlayerState = defaultState, action: StandardAction) {
 	let state = _state;
-	switch (type) {
+	switch (action.type) {
 		case NEW_ROUND:
 			state = newState(state);
 			state.wordsUsed = new Set();
 			break;
 
-		case SYNC:
+		case SYNC: {
+			const payload: { player: PlayerState } = action.payload;
 			state = newState(state);
 			state.wordsUsed = new Set(payload.player.wordsUsed);
 			break;
+		}
 
-		case BLEW_UP:
+		case BLEW_UP: {
+			const payload: ID = action.payload;
 			if (payload === state.me) {
 				state = newState(state);
 				state.score++;
 			}
 			break;
+		}
 
-		case FOUND_WORD:
+		case FOUND_WORD: {
+			const payload: { word: string, id: ID, next: ID } = action.payload;
 			state = newState(state);
 			state.wordsUsed = new Set(state.wordsUsed);
 			state.wordsUsed.add(payload.word);
 			break;
+		}
 	}
 
 	return state;

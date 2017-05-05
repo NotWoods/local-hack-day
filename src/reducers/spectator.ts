@@ -1,4 +1,7 @@
-import { PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD } from '../messages.js';
+import {
+	PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD
+} from '../messages';
+import { StandardAction } from '../socket/'
 
 interface PlayerSubState {
 	id: ID,
@@ -24,7 +27,7 @@ const defaultState = Object.freeze({
 function newState(oldState: SpectatorState): SpectatorState {
 	return Object.assign({}, oldState);
 }
-function newPlayer(id, name = ''): PlayerSubState {
+function newPlayer(id: ID, name = ''): PlayerSubState {
 	return {
 		id, // player unique ID
 		name, // name of the player if entered by user
@@ -44,18 +47,21 @@ function newRound(letters: string): RoundSubState {
  * order the bomb gets passed around. The other array holds data on every round
  * in this game, for spectators to see and for scores to be calculated from.
  */
-export default function spectator(_state: SpectatorState = defaultState, { type, payload }) {
+export default function spectator(_state: SpectatorState = defaultState, action: StandardAction) {
 	let state = _state;
-	switch (type) {
-		case PLAYER_ENTERED:
+	switch (action.type) {
+		case PLAYER_ENTERED: {
+			const payload: { id: ID, name: string } = action.payload;
 			state = newState(state);
 			state.players = [
 				...state.players,
 				newPlayer(payload.id, payload.name),
 			];
 			break;
+		}
 
 		case PLAYER_LEFT: {
+			const payload: ID = action.payload;
 			state = newState(state);
 			const index = state.players.findIndex(player => player.id === payload);
 			state.players.slice().splice(index, 1);
@@ -63,6 +69,7 @@ export default function spectator(_state: SpectatorState = defaultState, { type,
 		}
 
 		case BLEW_UP: {
+			const payload: ID = action.payload;
 			state = newState(state);
 			const index = state.players.findIndex(player => player.id === payload);
 
@@ -75,15 +82,18 @@ export default function spectator(_state: SpectatorState = defaultState, { type,
 			break;
 		}
 
-		case NEW_ROUND:
+		case NEW_ROUND: {
+			const payload: { letters: string, maxTime: number | null } = action.payload;
 			state = newState(state);
 			state.pastRounds = [
 				...state.pastRounds,
 				newRound(payload.letters),
 			];
 			break;
+		}
 
 		case FOUND_WORD: {
+			const payload: { word: string, id: ID, next: ID } = action.payload;
 			state = newState(state);
 			const last = state.pastRounds.length - 1;
 

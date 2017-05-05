@@ -12,7 +12,7 @@ const clientReducer = combineReducers({ global, player });
  * @param {SocketIOClient.Socket} io
  * @returns {Store}
  */
-export default function createClientStore(io: SocketIO.Socket) {
+export default function createClientStore(io: SocketIOClient.Socket) {
 	return createStore(
 		clientReducer,
 		applyMiddleware(
