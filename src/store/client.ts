@@ -1,5 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { global, player } from '../reducers';
+import { createStore, combineReducers, applyMiddleware, Store } from 'redux';
+import { global, player, PlayerState } from '../reducers';
 import { newSocketMiddleware } from '../socket';
 import {
 	NEW_ROUND, TICK, SYNC, COUNTDOWN,
@@ -12,7 +12,7 @@ const clientReducer = combineReducers({ global, player });
  * @param {SocketIOClient.Socket} io
  * @returns {Store}
  */
-export default function createClientStore(io: SocketIOClient.Socket) {
+export default function createClientStore(io: SocketIOClient.Socket): Store<PlayerState> {
 	return createStore(
 		clientReducer,
 		applyMiddleware(

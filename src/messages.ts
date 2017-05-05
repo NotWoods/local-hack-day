@@ -11,6 +11,7 @@ export const FOUND_WORD = 'bomb.passed';
 export const PLAYER_ENTERED = 'connection';
 export const PLAYER_LEFT = 'disconnect';
 export const BLEW_UP = 'bomb.done';
+export const SET_ROOM_ID = 'game.id'
 
 /**
  * Begin a new round and reset timers
@@ -88,4 +89,8 @@ export function gameDone(winners: string[]) {
  */
 export function foundWord(word: string, id: string, next: string) {
 	return { type: FOUND_WORD, payload: { word, id, next } };
+}
+
+export function setRoomID(id: string) {
+	return { type: SET_ROOM_ID, payload: id };
 }

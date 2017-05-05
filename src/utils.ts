@@ -27,6 +27,33 @@ export class UIError extends Error {
 
 
 /**
+ * @returns {Promise<void>} resolves after `time` milliseconds
+ */
+export function wait(time: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, time)).then(() => {});
+}
+
+
+/**
+ * @param ms how often to use the callback.
+ * @param callback called every ms milliseconds. When true is returned, the
+ * timer is stopped.
+ * @returns {Promise<void>} resolves after `time` milliseconds
+ */
+export function interval(
+	ms: number,
+	callback: () => boolean,
+): Promise<void> {
+	return new Promise(resolve => {
+		const timer = setInterval(() => {
+			if (callback()) resolve(timer);
+		}, ms);
+	})
+	.then((timer: NodeJS.Timer) => clearInterval(timer));
+}
+
+
+/**
  * Function to observe redux store and activate callback when
  * changes are detected.
  * @param {Redux.Store} store

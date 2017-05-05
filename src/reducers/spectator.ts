@@ -1,5 +1,5 @@
 import {
-	PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD
+	PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD, SET_ROOM_ID
 } from '../messages';
 import { StandardAction } from '../socket/'
 
@@ -15,11 +15,13 @@ interface RoundSubState {
 
 type ID = string;
 export interface SpectatorState {
+	roomID: ID
 	players: PlayerSubState[],
 	pastRounds: RoundSubState[]
 }
 
 const defaultState = Object.freeze({
+	roomID: '',
 	players: [], // players in the game
 	pastRounds: [], // data from  previous rounds in the game
 });
@@ -107,6 +109,11 @@ export default function spectator(_state: SpectatorState = defaultState, action:
 			break;
 		}
 
+		case SET_ROOM_ID: {
+			const payload: string = action.payload;
+			state = newState(state);
+			state.roomID = payload;
+		}
 	}
 
 	return state;
