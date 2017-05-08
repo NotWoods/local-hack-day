@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+	<title>Pass the Bomb</title>
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		.buttons { display: flex; }
+		.join {
+			flex: 2;
+			margin-right: 0.25em;
+		}
+	</style>
+</head>
+<body>
+	<form class="box" action="/game" method="get">
+		<h1>Pass the Bomb</h1>
+
+		<div class="field">
+			<label for="roomID">Room Code</label>
+			<input type="text" name="room" id="roomID" required />
+		</div>
+
+		<div class="field">
+			<label for="nickname">Nickname</label>
+			<input type="text" name="name" id="nickname" />
+		</div>
+
+		<div class="buttons">
+			<button class="large primary join">Join</button>
+			<button class="large spectate" formaction="/spectate">Spectate</button>
+		</div>
+	</form>
+</body>
+</html>

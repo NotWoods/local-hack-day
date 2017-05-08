@@ -1,7 +1,8 @@
 import {
-	PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD, SET_ROOM_ID
+	PLAYER_ENTERED, PLAYER_LEFT, BLEW_UP, NEW_ROUND, FOUND_WORD
 } from '../messages';
 import { StandardAction } from '../socket/'
+import { newState } from '../utils';
 
 interface PlayerSubState {
 	id: ID,
@@ -15,20 +16,15 @@ interface RoundSubState {
 
 type ID = string;
 export interface SpectatorState {
-	roomID: ID
 	players: PlayerSubState[],
 	pastRounds: RoundSubState[]
 }
 
 const defaultState = Object.freeze({
-	roomID: '',
 	players: [], // players in the game
 	pastRounds: [], // data from  previous rounds in the game
 });
 
-function newState(oldState: SpectatorState): SpectatorState {
-	return Object.assign({}, oldState);
-}
 function newPlayer(id: ID, name = ''): PlayerSubState {
 	return {
 		id, // player unique ID
@@ -107,12 +103,6 @@ export default function spectator(_state: SpectatorState = defaultState, action:
 			state.pastRounds = state.pastRounds.slice();
 			state.pastRounds[last] = round;
 			break;
-		}
-
-		case SET_ROOM_ID: {
-			const payload: string = action.payload;
-			state = newState(state);
-			state.roomID = payload;
 		}
 	}
 

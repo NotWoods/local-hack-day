@@ -1,17 +1,16 @@
 import generateString from './words/generateString.js';
 
-export const NEW_ROUND = 'bomb.new';
-export const TICK = 'bomb.tick';
-export const SYNC = 'game.sync';
-export const COUNTDOWN = 'game.countdown';
-export const PASS_BOMB = 'bomb.pass';
-export const GAME_OVER = 'game.over';
-export const CLIENT_DONE = 'bomb.send';
-export const FOUND_WORD = 'bomb.passed';
+export const NEW_ROUND = 'newRound';
+export const TICK = 'tick';
+export const SYNC = 'sync';
+export const COUNTDOWN = 'countdownTick';
+export const PASS_BOMB = 'submitBombToPass';
+export const GAME_OVER = 'gameOver';
+export const FOUND_WORD = 'bombPassedSuccessfully';
 export const PLAYER_ENTERED = 'connection';
 export const PLAYER_LEFT = 'disconnect';
-export const BLEW_UP = 'bomb.done';
-export const SET_ROOM_ID = 'game.id'
+export const BLEW_UP = 'roundOver';
+export const SET_ROOM_ID = 'setRoomID'
 
 /**
  * Begin a new round and reset timers

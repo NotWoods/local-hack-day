@@ -9,18 +9,16 @@
     "byline": "^5.0.0",
     "denodeify": "^1.2.1",
     "document-promises": "^3.1.0",
-    "hapi": "^16.0.1",
-    "inert": "^4.0.3",
-    "knuth-shuffle": "^1.0.1",
+    "express": "^4.15.2",
     "progress": "^2.0.0",
     "redux": "^3.6.0",
     "reselect": "^3.0.0",
     "socket.io": "^1.7.1",
-    "string.prototype.padstart": "^3.0.0",
-    "uuid": "^3.0.1"
+    "string.prototype.padstart": "^3.0.0"
   },
   "devDependencies": {
     "@types/byline": "^4.2.31",
+    "@types/express": "^4.0.35",
     "@types/hammerjs": "^2.0.34",
     "@types/progress": "^1.1.28",
     "@types/socket.io": "^1.4.29",

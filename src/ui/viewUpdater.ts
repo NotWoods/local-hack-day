@@ -1,4 +1,5 @@
 import { Store, Unsubscribe } from 'redux';
+import { createSelector } from 'reselect';
 import { State } from '../reducers/';
 import { getElements, observeStore, allPossibleCases, UIMap } from '../utils';
 import { isMyTurn, percentTimeLeft } from '../selectors';
@@ -8,11 +9,25 @@ const UI: UIMap = {
 	wordInput: null,
 	letterSet: null,
 	subtitle: null,
+	formFields: null,
 };
 
-const READY_TEXT = 'Your word must contain the letters:';
-const WAIT_TEXT = 'Waiting to receive the bomb...';
 const FUSE_LENGTH = 415;
+
+const status = createSelector(
+	(state: State) => state.global.countdown,
+	isMyTurn,
+	(countdown, myTurn) => {
+		if (countdown > 0) {
+			const unit = countdown === 1 ? 'second' : 'seconds';
+			return `The game will begin in ${countdown} ${unit}`;
+		} else if (myTurn) {
+			return `It's your turn!`;
+		} else {
+			return `Waiting to receive the bomb...`;
+		}
+	}
+)
 
 /**
  * Observes redux store and updates the UI when needed
@@ -25,19 +40,24 @@ export default function createViewUpdater(store: Store<State>): Unsubscribe {
 	const wordInput = <HTMLInputElement> UI.wordInput;
 	const letterSet = <HTMLElement> UI.letterSet;
 	const subtitle = <HTMLElement> UI.subtitle;
+	const formFields = <HTMLElement> UI.formFields;
+
+	const o0 = observeStore(store, status, text =>
+		subtitle.textContent = text
+	);
 
 	const o1 = observeStore(store, isMyTurn, (myTurn) => {
 		if (myTurn) {
-			subtitle.textContent = READY_TEXT;
+			formFields.setAttribute('disabled', 'true');
 		} else {
-			subtitle.textContent = WAIT_TEXT;
+			formFields.removeAttribute('disabled');
 			wordInput.value = '';
 		}
 	});
 
-	const o2 = observeStore(store, percentTimeLeft, (percent) => {
-		fuse.style.strokeDashoffset = String((percent * FUSE_LENGTH) + 3);
-	});
+	const o2 = observeStore(store, percentTimeLeft, percent =>
+		fuse.style.strokeDashoffset = String((percent * FUSE_LENGTH) + 3)
+	);
 
 	const o3 = observeStore(store, s => s.global.letters, (letters) => {
 		letterSet.textContent = letters;
@@ -46,6 +66,7 @@ export default function createViewUpdater(store: Store<State>): Unsubscribe {
 
 
 	return function removeObservers() {
+		o0();
 		o1();
 		o2();
 		o3();

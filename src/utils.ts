@@ -81,6 +81,11 @@ export function observeStore<S, T>(
 }
 
 
+export function newState<T>(oldState: T): T {
+	return Object.assign({}, oldState);
+}
+
+
 /**
  * Generates all possible casing combinations for some string.
  * @param {string} string source text

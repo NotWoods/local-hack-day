@@ -6,13 +6,14 @@ import {
 	TICK, COUNTDOWN, GAME_OVER,
 } from '../messages.js';
 
-const serverReducer = combineReducers({ global, spectator });
+const serverReducer = combineReducers<ServerState>({ global, spectator });
+export { serverReducer as reducer }
 
 /**
  * @param {SocketIO.Namespace} io
  * @returns {Store}
  */
-export default function createServerStore(io: SocketIO.Namespace): Store<ServerState> {
+export default function createServerStore(io: SocketIO.Server): Store<ServerState> {
 	return createStore(
 		serverReducer,
 		applyMiddleware(

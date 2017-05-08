@@ -1,0 +1,113 @@
+.status-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.score {
+	order: 2;
+}
+.score-line {
+	margin: 0;
+}
+
+.status-message {
+	margin: 0;
+}
+
+
+.form-fields {
+	margin: 0;
+	padding: 0;
+	border: 0;
+
+	text-align: center;
+}
+.form-fields[disabled] {
+	opacity: 0.75;
+}
+
+.letter-header {
+	margin: 3em;
+}
+.letter-description {
+	margin: 0;
+
+	font-weight: normal;
+}
+.letters {
+	margin: 0;
+
+	font-size: 4em;
+}
+
+.word-input {
+	margin-bottom: 1.5em;
+}
+
+
+.bomb-wrapper {
+	position: relative;
+	width: 310px;
+	height: 310px;
+
+	border: 0;
+	background: transparent;
+}
+.bomb-wrapper:active {
+	box-shadow: none;
+}
+.game-icon {
+	position: absolute;
+	width: 90%;
+	top: 5%;
+	left: 5%;
+}
+
+.fuse {
+	stroke-dasharray: 415;
+	transition: stroke-dashoffset 0.1s linear;
+}
+.bomb {
+	animation-duration: 0.82s;
+	animation-timing-function: cubic-bezier(.36, .07, .19, .97);
+	animation-fill-mode: both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -500%, 0); }
+}
+
+@keyframes slideDown {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, 500%, 0); }
+}
+
+@keyframes slideLeft {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-500%, 0, 0); }
+}
+
+@keyframes slideRight {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(500%, 0, 0); }
+}
