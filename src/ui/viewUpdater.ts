@@ -42,11 +42,11 @@ export default function createViewUpdater(store: Store<State>): Unsubscribe {
 	const subtitle = <HTMLElement> UI.subtitle;
 	const formFields = <HTMLElement> UI.formFields;
 
-	const o0 = observeStore(store, status, text =>
+	const statusUpdater = observeStore(store, status, text =>
 		subtitle.textContent = text
 	);
 
-	const o1 = observeStore(store, isMyTurn, (myTurn) => {
+	const watchMyTurn = observeStore(store, isMyTurn, (myTurn) => {
 		if (myTurn) {
 			formFields.setAttribute('disabled', 'true');
 		} else {
@@ -55,20 +55,20 @@ export default function createViewUpdater(store: Store<State>): Unsubscribe {
 		}
 	});
 
-	const o2 = observeStore(store, percentTimeLeft, percent =>
+	const fuseUpdater = observeStore(store, percentTimeLeft, percent =>
 		fuse.style.strokeDashoffset = String((percent * FUSE_LENGTH) + 3)
 	);
 
-	const o3 = observeStore(store, s => s.global.letters, (letters) => {
+	const lettersUpdater = observeStore(store, s => s.global.letters, (letters) => {
 		letterSet.textContent = letters;
 		wordInput.pattern = `.*(?:${allPossibleCases(letters).join('|')}).*`;
 	});
 
 
 	return function removeObservers() {
-		o0();
-		o1();
-		o2();
-		o3();
+		statusUpdater();
+		watchMyTurn();
+		fuseUpdater();
+		lettersUpdater();
 	}
 }

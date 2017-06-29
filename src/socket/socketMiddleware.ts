@@ -1,4 +1,6 @@
 import * as redux from 'redux';
+import { State } from '../reducers/';
+import { getRoomID } from '../selectors';
 
 const specialTypes = new Set([
 	'connection', 'connect',
@@ -18,13 +20,13 @@ export interface StandardAction extends redux.Action {
  * Creates a redux middleware function that connected the given socket
  * to the store.
  * @param {socket.Socket} io
- * @param {string[]} [messageTypes] - list of actions to listen to
+ * @param {...string[]} [messageTypes] - list of actions to listen to
  */
 export default function newSocketMiddleware(
-	io: SocketIOClient.Socket,
-	messageTypes: string[] = [],
+	io: SocketIO.Server,
+	...messageTypes: string[],
 ): redux.Middleware {
-	return function socketMiddleware(store: redux.Store<any>) {
+	return function socketMiddleware(store: redux.Store<State>) {
 		// When one of the listed message types are received, dispatch it as a
 		// action for the store to process.
 		for (const type of messageTypes) {
@@ -33,15 +35,20 @@ export default function newSocketMiddleware(
 				payload: JSON.parse(payload),
 				meta: { noemit: true },
 			}));
+
+			io.on(type, () => {});
 		}
 
 		// When this store dispatches something, also emit it using the store.
-		return (next: redux.Dispatch<any>) => (action: StandardAction) => {
+		return (next: redux.Dispatch<State>) => (action: StandardAction) => {
 			next(action);
-			if (!specialTypes.has(action.type)
-			&& !(action.meta && action.meta.noemit)) {
-				io.emit(action.type, JSON.stringify(action.payload));
+			const { type, meta } = action;
+
+			const doNotEmit = meta && meta.noemit;
+			if (!doNotEmit && !specialTypes.has(type)) {
+				const payload = JSON.stringify(action.payload);
+				io.to(getRoomID(store.getState())).emit(type, payload);
 			}
-		}
+		};
 	}
 }

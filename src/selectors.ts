@@ -151,3 +151,7 @@ export function currentLead({ spectator }: ServerState): ID[] {
 
 	return Array.from(leads);
 }
+
+export function getRoomID({ global }: State) {
+	return global.roomID;
+}
