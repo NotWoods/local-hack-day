@@ -9,9 +9,12 @@ export function initialize(path = 'sowpods.txt') {
 	stream.on('data', (word: string) => dictionary.add(word));
 
 	return new Promise((resolve, reject) =>
-		stream.on('finish', resolve).on('error', reject)
-	)
-	.catch(error => { err = error; throw error; })
+		stream.on('finish', resolve).on('error', reject))
+	.catch(error => {
+		stream.destroy();
+		err = error;
+		throw error;
+	})
 	.then(() => dictionary);
 }
 
@@ -20,7 +23,7 @@ export function initialize(path = 'sowpods.txt') {
  * @param {string} word
  * @returns {boolean} if word exists
  */
-export default function existsInDictionary(word: string) {
+export default function existsInDictionary(word: string): boolean {
 	if (err) throw err;
 	else if (dictionary.size === 0) {
 		throw new Error('Dictionary not initialized.');

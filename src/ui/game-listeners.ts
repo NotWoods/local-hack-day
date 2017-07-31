@@ -34,9 +34,10 @@ function clearAnimationState() {
  * Creates a function to submit test inside the input to the server, and attaches
  * it to form onsubmit. When the form is submitted, an event will be emitted to
  * the server.
+ *
  * Document must be parsed.
  */
-export default function initializeBombEvents(
+export default function initializeEventListeners(
 	{ getState }: Store<ClientState>,
 	io?: SocketIOClient.Socket,
 ): Unsubscribe {

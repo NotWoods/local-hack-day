@@ -1,9 +1,7 @@
 import { parsed } from 'document-promises';
-import initializeBombEvents from './bombEvents';
-import createSubmitHandler from './submitText';
-import createViewUpdater from './viewUpdater';
-
 import { Store, Unsubscribe } from 'redux';
+import initializeEventListeners from './game-listeners';
+import autoRender from './game-render';
 import { ClientState } from '../reducers/';
 
 /**
@@ -20,14 +18,11 @@ export default async function createUIListeners(
 ): Promise<Unsubscribe> {
 	await parsed;
 
-	const removeBombEventListeners = initializeBombEvents(store, io);
-	const removeObservers = createViewUpdater(store);
-	let removeSubmitListeners = Function();
-	if (io) removeSubmitListeners = createSubmitHandler(store, io);
+	const removeEventListeners = initializeEventListeners(store, io);
+	const stopAutoRendering = autoRender(store);
 
 	return function removeUIListeners() {
-		removeBombEventListeners();
-		removeObservers();
-		removeSubmitListeners();
+		removeEventListeners();
+		stopAutoRendering();
 	}
 }
