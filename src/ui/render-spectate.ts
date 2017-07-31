@@ -1,4 +1,6 @@
-import { getElement } from '../utils';
+import { Store, Unsubscribe } from 'redux';
+import { getElement, observeStore } from '../utils';
+import { ServerState } from '../reducers/';
 import { SpectatorState, PlayerSubState, RoundSubState } from '../reducers/spectator';
 
 type ID = string;
@@ -70,4 +72,8 @@ export function renderSpectate(props: SpectatorState) {
 	const rounds = getElement('rounds');
 	const parent = rounds.parentElement as HTMLElement;
 	parent.replaceChild(buildRounds(props.pastRounds), rounds);
+}
+
+export default function autoRender(store: Store<ServerState>): Unsubscribe {
+	return observeStore(store, state => state.spectator, renderSpectate);
 }

@@ -1,9 +1,29 @@
-import { getElement } from '../utils';
+import { createSelector } from 'reselect';
+import { Store, Unsubscribe } from 'redux';
+import { getElement, observeStore } from '../utils';
+import { isMyTurn, percentTimeLeft } from '../selectors';
+import { ClientState } from '../reducers/';
+
+const selector = createSelector(
+	(state: ClientState) => state.player,
+	state => state.global,
+	isMyTurn,
+	percentTimeLeft,
+	(player, global, myTurn, timePercentage) => {
+		return {
+			myTurn,
+			blownUp: false,
+			round: global.round,
+			score: player.score,
+			timePercentage,
+			letters: global.letters,
+		};
+	}
+)
 
 interface GameProps {
-	playerWithBomb: string | null,
+	myTurn: boolean,
 	blownUp: boolean,
-	submitted: boolean,
 	round: number,
 	score: number,
 	timePercentage: number,
@@ -18,12 +38,12 @@ export function renderGame(props: GameProps) {
 	// Set the bomb status text, and disable/enable text box
 	// based on wheter or not the player has the bomb currently
 	let hasBombText;
-	if (props.playerWithBomb == null) {
+	if (props.myTurn) {
 		hasBombText = 'You have the bomb!';
 		bombClasses.remove('inactive');
 		getElement('wordInput').removeAttribute('disabled');
 	} else {
-		hasBombText = `${props.playerWithBomb} is holding the bomb`;
+		hasBombText = 'Someone else is holding the bomb';
 		bombClasses.add('inactive');
 		getElement('wordInput').setAttribute('disabled', 'true');
 	}
@@ -33,13 +53,6 @@ export function renderGame(props: GameProps) {
 		getElement('game-form').classList.add('failed');
 	} else {
 		getElement('game-form').classList.remove('failed');
-	}
-
-	// Play submission animation
-	if (props.submitted) {
-		bombClasses.add('bomb-submit');
-	} else {
-		bombClasses.remove('bomb-submit');
 	}
 
 	// Update the round number
@@ -55,4 +68,8 @@ export function renderGame(props: GameProps) {
 
 	// Update the letters displayed
 	getElement('letterSet').textContent = props.letters;
+}
+
+export default function autoRender(store: Store<ClientState>): Unsubscribe {
+	return observeStore(store, selector, renderGame);
 }

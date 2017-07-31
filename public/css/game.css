@@ -85,11 +85,13 @@
   }
 }
 
+.bomb {
+	animation-duration: 0.82s;
+	animation-timing-function: cubic-bezier(.36, .07, .19, .97);
+	animation-fill-mode: both;
+}
 .game-over {
 	animation: 1s pulse infinite;
-}
-.bomb-submit {
-	animation: 1s bounceOutRight forwards;
 }
 .inactive .bomb {
 	opacity: 0.5;
