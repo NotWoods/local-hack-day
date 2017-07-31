@@ -13,10 +13,11 @@
 		--><span class="title-word title--bomb">Bomb</span>
 	</h1>
 
-	<form class="game inactive">
+	<form id="game-form" class="game">
 		<ul class="status">
-			<li>You have the bomb!</li>
-			<li>Burnt 0 times</li>
+			<li>Round <span id="round">1</span></li>
+			<li>Burnt <span id="score">0 times</span></li>
+			<li id="hasBomb">You have the bomb!</li>
 		</ul>
 
 		<span class="letter-state">Words must contain:</span>

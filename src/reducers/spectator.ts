@@ -4,12 +4,12 @@ import {
 import { StandardAction } from '../socket/'
 import { newState } from '../utils';
 
-interface PlayerSubState {
+export interface PlayerSubState {
 	id: ID,
 	name: string,
 	score: number,
 }
-interface RoundSubState {
+export interface RoundSubState {
 	letters: string,
 	wordsUsed: Map<string, ID>
 }

@@ -2,6 +2,22 @@ import { shim } from 'string.prototype.padstart';
 shim();
 import { Store } from 'redux';
 
+const elementCache = new Map<string, HTMLElement>();
+export function getElement(id: string): HTMLElement {
+	if (elementCache.has(id)) {
+		return elementCache.get(id) as HTMLElement;
+	}
+
+	const element = document.getElementById(id);
+	if (element == null) {
+		throw new TypeError(`Invalid ID "#${id}"`);
+	}
+
+	elementCache.set(id, element);
+	return element;
+}
+
+
 export interface UIMap {
 	[id: string]: HTMLElement | null
 };
