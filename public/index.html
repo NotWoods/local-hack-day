@@ -1,28 +1,26 @@
 <!doctype html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Pass the Bomb</title>
-	<link rel="stylesheet" href="css/style.css">
-	<style>
-		.buttons { display: flex; }
-		.join {
-			flex: 2;
-			margin-right: 0.25em;
-		}
-	</style>
+	<link rel="stylesheet" href="/css/all.css">
+	<link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-	<form class="box" action="/game" method="get">
-		<h1>Pass the Bomb</h1>
-
+	<h1 class="title">
+		<span class="title-word title--pass">Pass</span><!--
+		--><span class="title-word title--the">the</span><!--
+		--><span class="title-word title--bomb">Bomb</span>
+	</h1>
+	<form class="enter-room" action="/game" method="get">
 		<div class="field">
 			<label for="roomID">Room Code</label>
-			<input type="text" name="room" id="roomID" required />
+			<input type="text" name="room" id="roomID" required placeholder="ABCD" />
 		</div>
 
 		<div class="field">
 			<label for="nickname">Nickname</label>
-			<input type="text" name="name" id="nickname" />
+			<input type="text" name="name" id="nickname" placeholder="Bill" />
 		</div>
 
 		<div class="buttons">

@@ -1,0 +1,39 @@
+.field {
+	margin-bottom: 1em;
+}
+
+label {
+	font-weight: bold;
+
+	display: inline-block;
+	margin-bottom: 0.5em;
+}
+
+button {
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	border: 1px solid transparent;
+	font: inherit;
+	cursor: pointer;
+	background: #333;
+	color: #eee;
+	font-weight: bold;
+
+	display: inline-block;
+	padding: .5em 1em;
+	border-radius: .25em;
+}
+button:hover {
+	background: #535456;
+}
+
+.enter-room {
+	max-width: 30em;
+	margin: auto;
+}
+
+.buttons {
+	text-align: center;
+}

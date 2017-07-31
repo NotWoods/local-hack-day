@@ -1,41 +1,47 @@
 <!doctype html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Pass the Bomb</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/all.css">
 	<link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-	<header class="status-header">
-		<section class="score">
-			<p class="score-line" id="nickname">John</p>
-			<p class="score-line">Score: <span id="score">0</span></p>
-		</section>
+	<h1 class="title title-small">
+		<span class="title-word title--pass">Pass</span><!--
+		--><span class="title-word title--the">the</span><!--
+		--><span class="title-word title--bomb">Bomb</span>
+	</h1>
 
-		<h6 class="status-message" id="status">Jill is holding the bomb...</h6>
-	</header>
+	<form class="game inactive">
+		<ul class="status">
+			<li>You have the bomb!</li>
+			<li>Burnt 0 times</li>
+		</ul>
 
-	<form id="form">
-		<fieldset class="form-fields" disabled id="formFields">
-			<label id="letterHeader" for="wordInput" class="letter-header">
-				<h3 class="letter-description">Your word must contain:</h3>
-				<h2 class="letters" id="letterSet">ME</h2>
-			</label>
+		<span class="letter-state">Words must contain:</span>
+		<h2 class="letters" id="letterSet">ME</h2>
 
-			<input class="word-input" id="wordInput" name="word" type="text" required autofocus>
+		<button class="bomb-wrapper">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445.9 422.7" id="bomb" class="bomb game-icon">
+				<g transform="translate(-298.798 -435.313)">
+					<path id="fuse" class="fuse" fill="none" stroke="#c79a6a" stroke-width="15" d="M559 547.4s1-29.5-43-46c-32-12-63 15-63 15-16.5 10-35.7 52.5-92.4 52.5S285 462 332 441.3"/>
+					<circle fill="#212121" cx="595" cy="708.4" r="149.7" />
+					<path fill="#212121" d="M532 548.2l47.2-12.7 7.8 29-47.3 12.7z"/>
+					<path fill="#535456" d="M659.8 636c30 38 29 76 13 132 0 0 42.8-11 39-65-5-71.2-52-67-52-67z"/>
+				</g>
+			</svg>
+			<img id="explosion" class="game-over game-icon" src="explosion.gif" width="300" hidden>
+		</button>
 
-			<button class="bomb-wrapper">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445.9 422.7" id="bomb" class="bomb game-icon">
-					<g transform="translate(-298.798 -435.313)">
-						<path id="fuse" class="fuse" fill="none" stroke="#c79a6a" stroke-width="15" d="M559 547.4s1-29.5-43-46c-32-12-63 15-63 15-16.5 10-35.7 52.5-92.4 52.5S285 462 332 441.3"/>
-						<circle fill="#212121" cx="595" cy="708.4" r="149.7" />
-						<path fill="#212121" d="M532 548.2l47.2-12.7 7.8 29-47.3 12.7z"/>
-						<path fill="#535456" d="M659.8 636c30 38 29 76 13 132 0 0 42.8-11 39-65-5-71.2-52-67-52-67z"/>
-					</g>
-				</svg>
-				<img id="explosion" class="game-over game-icon" src="explosion.gif" width="300" hidden>
-			</button>
-		</fieldset>
+		<input
+			class="word-input"
+			id="wordInput"
+			name="word"
+			type="text"
+			required
+			autofocus
+		>
 	</form>
 </body>
 </html>
