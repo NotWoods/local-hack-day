@@ -10,6 +10,8 @@
     "denodeify": "^1.2.1",
     "document-promises": "^3.1.0",
     "express": "^4.15.2",
+    "hapi": "^16.5.0",
+    "inert": "^4.2.1",
     "progress": "^2.0.0",
     "redux": "^3.6.0",
     "reselect": "^3.0.0",
