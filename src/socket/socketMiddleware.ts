@@ -1,4 +1,6 @@
-import * as redux from 'redux';
+import {
+	Action, Middleware, Dispatch, MiddlewareAPI
+} from 'redux';
 import { State } from '../reducers/';
 import { getRoomID } from '../selectors';
 
@@ -9,11 +11,15 @@ const specialTypes = new Set([
 	'error', 'reconnect_error', 'reconnect_failed',
 ]);
 
-export interface StandardAction extends redux.Action {
+export interface StandardAction extends Action {
 	type: string,
 	payload?: any,
 	error?: true | null,
 	meta?: any,
+}
+
+interface SocketMiddleware extends Middleware {
+	(api: MiddlewareAPI<State>): (next: Dispatch<State>) => Dispatch<State>
 }
 
 /**
@@ -25,12 +31,12 @@ export interface StandardAction extends redux.Action {
 export default function newSocketMiddleware(
 	io: SocketIO.Server,
 	...messageTypes: string[],
-): redux.Middleware {
-	return function socketMiddleware(store: redux.Store<State>) {
+): SocketMiddleware {
+	return function socketMiddleware(api: MiddlewareAPI<State>) {
 		// When one of the listed message types are received, dispatch it as a
 		// action for the store to process.
 		for (const type of messageTypes) {
-			io.on(type, (payload: string) => store.dispatch({
+			io.on(type, (payload: string) => api.dispatch({
 				type,
 				payload: JSON.parse(payload),
 				meta: { noemit: true },
@@ -40,15 +46,16 @@ export default function newSocketMiddleware(
 		}
 
 		// When this store dispatches something, also emit it using the store.
-		return (next: redux.Dispatch<State>) => (action: StandardAction) => {
+		return (next: Dispatch<State>) => <A extends StandardAction>(action: A) => {
 			next(action);
 			const { type, meta } = action;
 
 			const doNotEmit = meta && meta.noemit;
 			if (!doNotEmit && !specialTypes.has(type)) {
 				const payload = JSON.stringify(action.payload);
-				io.to(getRoomID(store.getState())).emit(type, payload);
+				io.to(getRoomID(api.getState() as any)).emit(type, payload);
 			}
+			return action;
 		};
 	}
 }

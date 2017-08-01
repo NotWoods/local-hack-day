@@ -1,28 +1,27 @@
+import { parse } from 'querystring';
 import { parsed } from 'document-promises';
-import { Store, Unsubscribe } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import initializeEventListeners from './game-listeners';
 import autoRender from './game-render';
-import { ClientState } from '../reducers/';
+import { global, player, ClientState } from '../reducers/';
 
-/**
- * Creates an interface between the UI, redux store, and socket.
- * A socket is used to handle submitting a word, and can be omitted for
- * debugging.
- * @param {redux.Store} store
- * @param {SocketIOClient.Socket} [io]
- * @returns {Promise<redux.Unsubscribe>}
- */
-export default async function createUIListeners(
-	store: Store<ClientState>,
-	io?: SocketIOClient.Socket,
-): Promise<Unsubscribe> {
+async function main() {
+	const { room = '', name = '' } = parse(window.location.search.substr(1));
+
+	const reducer = combineReducers<ClientState>({ global, player });
+	let preloadedState = reducer(undefined as any, { type: '@@INIT' });
+	preloadedState.global.roomID = room;
+	preloadedState.player.me = name;
+
+	const store = createStore(
+		reducer,
+		preloadedState,
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+	);
+
 	await parsed;
-
-	const removeEventListeners = initializeEventListeners(store, io);
-	const stopAutoRendering = autoRender(store);
-
-	return function removeUIListeners() {
-		removeEventListeners();
-		stopAutoRendering();
-	}
+	initializeEventListeners(store);
+	autoRender(store);
 }
+
+main();

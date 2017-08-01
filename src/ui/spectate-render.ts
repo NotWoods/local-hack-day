@@ -63,7 +63,9 @@ function buildPlayerTableBody(props: PlayerSubState[]): HTMLTableSectionElement 
 	return tbody;
 }
 
-
+/**
+ * Updates the DOM for the /spectate.html page
+ */
 export function renderSpectate(props: SpectatorState) {
 	const table = getElement('players');
 	const [tbody] = table.getElementsByTagName('tbody');

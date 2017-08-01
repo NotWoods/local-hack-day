@@ -93,7 +93,7 @@
 .game-over {
 	animation: 1s pulse infinite;
 }
-.inactive .bomb {
+.inactive.bomb {
 	opacity: 0.5;
 }
 

@@ -20,10 +20,10 @@ export interface SpectatorState {
 	pastRounds: RoundSubState[]
 }
 
-const defaultState = Object.freeze({
+const defaultState = {
 	players: [], // players in the game
 	pastRounds: [], // data from  previous rounds in the game
-});
+};
 
 function newPlayer(id: ID, name = ''): PlayerSubState {
 	return {

@@ -4,8 +4,8 @@ import {
 import { StandardAction } from '../socket/'
 import { newState } from '../utils';
 
-const maxTime = parseInt(process.env.MAX_TIME, 10) || 60;
-const countdown = parseInt(process.env.COUNTDOWN_START, 10) || 60;
+const maxTime = parseInt(process.env.MAX_TIME || '', 10) || 60;
+const countdown = parseInt(process.env.COUNTDOWN_START || '', 10) || 60;
 
 type ID = string;
 export interface GlobalState {
@@ -19,7 +19,7 @@ export interface GlobalState {
 	countdown: number,
 }
 
-const defaultState = Object.freeze({
+const defaultState = {
 	roomID: '',
 	round: 0, // Current round number
 	maxTime, // Maximum time in a round
@@ -28,7 +28,7 @@ const defaultState = Object.freeze({
 	letters: '', // Current letters needed in a word
 	winner: '', // Name of the winner at the end of the game
 	countdown, // Current countdown number, before the game has started
-});
+};
 
 /**
  * Reducer to track global state shared by the server and clients. Keeps track of

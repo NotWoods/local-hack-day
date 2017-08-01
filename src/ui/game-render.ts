@@ -32,6 +32,9 @@ interface GameProps {
 
 const FUSE_LENGTH = 415;
 
+/**
+ * Updates the DOM for the /game.html page
+ */
 export function renderGame(props: GameProps) {
 	const bombClasses = getElement('bomb').classList;
 
@@ -47,6 +50,7 @@ export function renderGame(props: GameProps) {
 		bombClasses.add('inactive');
 		getElement('wordInput').setAttribute('disabled', 'true');
 	}
+	getElement('hasBomb').textContent = hasBombText;
 
 	// Add 'failed' class if the player lost
 	if (props.blownUp) {
@@ -61,9 +65,11 @@ export function renderGame(props: GameProps) {
 	// Update the score number
 	let scoreText = `${props.score} time`;
 	if (props.score !== 1) scoreText += 's';
+	getElement('score').textContent = scoreText;
 
 	// Update the fuse
-	const percent = String((props.timePercentage * FUSE_LENGTH) + 3);
+	let timeElapsedPercent = 1 - props.timePercentage;
+	const percent = ((timeElapsedPercent * FUSE_LENGTH) + 3).toString();
 	getElement('fuse').style.strokeDashoffset = percent;
 
 	// Update the letters displayed

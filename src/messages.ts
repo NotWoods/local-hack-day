@@ -1,4 +1,4 @@
-import generateString from './words/generateString.js';
+import generateString from './words/generateString';
 
 export const NEW_ROUND = 'newRound';
 export const TICK = 'tick';

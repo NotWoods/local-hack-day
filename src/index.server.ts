@@ -11,5 +11,3 @@ const middleware = newSocketMiddleware(io,
 	BLEW_UP, NEW_ROUND, FOUND_WORD, TICK, COUNTDOWN, GAME_OVER);
 
 const store = createStore(reducer, applyMiddleware(middleware));
-
-

@@ -2,7 +2,6 @@ import test from 'blue-tape';
 import { createStore, combineReducers } from 'redux';
 import { global as globalReducer, player } from '../../src/reducers/index.js';
 import { newRound } from '../../src/messages.js';
-import { isMyTurn, percentTimeLeft } from '../../src/selectors.js';
 
 const makeFakeElement = () => ({ textContent: '', value: '', style: {} });
 const fakeElements = new Map();
@@ -13,13 +12,13 @@ function getFakeElement(id) {
 
 global.document = { getElementById: getFakeElement };
 
-import createViewUpdater from '../../src/ui/viewUpdater.js';
+import autoRender from '../../src/ui/game-render.js';
 
 const client = combineReducers({ global: globalReducer, player });
 const getStore = createStore.bind(null, client);
 
 test('Returns function to remove observers', (t) => {
-	t.equal(typeof createViewUpdater(getStore()), 'function',
+	t.equal(typeof autoRender(getStore()), 'function',
 		'viewUpdater returns a function');
 	t.end();
 });
@@ -27,7 +26,7 @@ test('Returns function to remove observers', (t) => {
 test('Updates letters to match store', (t) => {
 	const store = getStore();
 	const letters = getFakeElement('letterSet');
-	createViewUpdater(store);
+	autoRender(store);
 
 	store.dispatch(newRound('ad'));
 	t.equal(letters.textContent, 'AD');
@@ -40,7 +39,7 @@ test('Updates letters to match store', (t) => {
 test('Creates pattern to match all casing types', (t) => {
 	const store = getStore();
 	const input = getFakeElement('wordInput');
-	createViewUpdater(store);
+	autoRender(store);
 
 	store.dispatch(newRound('me'));
 	const { pattern } = input;

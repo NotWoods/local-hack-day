@@ -10,11 +10,11 @@ export interface PlayerState {
 	wordsUsed: Set<string>,
 }
 
-const defaultState = Object.freeze({
+const defaultState = {
 	me: '', // Stores player ID
 	score: 0, // Tracks player score
 	wordsUsed: new Set(), // Tracks words used this round
-});
+};
 
 function newState(oldState: PlayerState): PlayerState {
 	const newS = Object.assign({}, oldState);
