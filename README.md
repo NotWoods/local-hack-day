@@ -25,6 +25,6 @@ This launches the server and prints the URL players should visit.
 ## Developing
 
 ### Built With
-Node.js v7
-socket.io v1.7
-hapi v16
+* Node.js v7
+* socket.io v1.7
+* hapi v16
