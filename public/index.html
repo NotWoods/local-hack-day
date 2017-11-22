@@ -14,8 +14,17 @@
 	</h1>
 	<form class="enter-room" action="/game" method="get">
 		<div class="field">
-			<label for="roomID">Room Code</label>
-			<input type="text" name="room" id="roomID" required placeholder="ABCD" />
+			<label for="roomID">Server</label>
+			<div>
+				<input
+					type="url"
+					name="server"
+					id="serverURL"
+					required
+					placeholder="example.com"
+				/>
+				<i></i>
+			</div>
 		</div>
 
 		<div class="field">
@@ -24,8 +33,12 @@
 		</div>
 
 		<div class="buttons">
-			<button class="large primary join">Join</button>
-			<button class="large spectate" formaction="/spectate">Spectate</button>
+			<button class="large primary join">
+				Join
+			</button>
+			<button class="large spectate" formaction="/spectate">
+				Spectate
+			</button>
 		</div>
 	</form>
 </body>

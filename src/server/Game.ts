@@ -25,3 +25,10 @@ export default function initStore() {
 
 	return store;
 }
+
+
+export default class Game {
+	constructor() {
+
+	}
+}
