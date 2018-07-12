@@ -2,6 +2,8 @@
 
 # pass-the-bomb
 
+[![devpost - Local Hack Day 2016](https://img.shields.io/badge/Devpost-Local%20Hack%20Day%202016-blue.svg)](https://devpost.com/software/passthebomb)
+
 UBC Local Hack project, based on the board game [Pass the Bomb](https://en.wikipedia.org/wiki/Pass_the_Bomb).
 
 A multiplayer word game where players must quickly think of words to pass the bomb to another player before time runs out.
