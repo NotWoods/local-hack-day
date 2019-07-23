@@ -4,8 +4,9 @@ const { route: validateWord } = require('./validWord.js');
 const { publicFiles } = require('./public.js');
 
 const server = new Server();
+const port = parseInt(process.argv[2], 10);
 server.connection({
-	port: 80
+	port: Number.isNaN(port) ? 8080 : port,
 });
 
 server.register(Inert).then(() => server.route(publicFiles));

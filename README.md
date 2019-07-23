@@ -19,7 +19,7 @@ Install [Node](https://nodejs.org/) and npm if you haven't, and clone or downloa
 Then run:
 ```shell
 npm install
-npm start
+npm start -- 8000
 ```
 
 This launches the server and prints the URL players should visit.
