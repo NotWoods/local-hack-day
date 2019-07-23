@@ -1,4 +1,4 @@
-<img src="https://tigeroakes.com/images/pass-the-bomb/logo.svg" width="120">
+<img src="public/bomb.svg" width="120" alt="">
 
 # pass-the-bomb
 
